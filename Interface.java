@@ -396,7 +396,8 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_jBconexActionPerformed
 
     private void jBprimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBprimActionPerformed
-        // PRIM
+        JOptionPane.showOptionDialog(null, "Deseja procurar o caminho com qual tipo de busca?\n\n", "Tipo de busca",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcoes, null);
     }//GEN-LAST:event_jBprimActionPerformed
 
     private void jBkrusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBkrusActionPerformed
