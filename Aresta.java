@@ -3,6 +3,7 @@ package main;
 public class Aresta {
     private int chave;
     private int valor;
+    private int chave2;
 
     public Aresta(int chave, int valor) {
         this.chave = chave;
@@ -24,4 +25,14 @@ public class Aresta {
     public void setValor(int valor) {
         this.valor = valor;
     }
+
+    public int getChave2() {
+        return chave2;
+    }
+
+    public void setChave2(int chave2) {
+        this.chave2 = chave2;
+    }
+    
+    
 }
