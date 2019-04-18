@@ -5,8 +5,8 @@ import javax.swing.JOptionPane;
 
 public class Interface extends javax.swing.JFrame {
 
-    public Grafo grafos[];
-    
+    public static Grafo grafos[];
+
     public Interface() {
         initComponents();
         jTBmatriz.setSelected(true);
@@ -39,8 +39,6 @@ public class Interface extends javax.swing.JFrame {
         jTalg = new javax.swing.JLabel();
         jBprim = new javax.swing.JButton();
         jPane2 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Menu");
@@ -269,26 +267,15 @@ public class Interface extends javax.swing.JFrame {
 
         jABAS.addTab("Main", jPane1);
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jTextArea1.setText("Esse programa faz muitas coisas");
-        jScrollPane1.setViewportView(jTextArea1);
-
         javax.swing.GroupLayout jPane2Layout = new javax.swing.GroupLayout(jPane2);
         jPane2.setLayout(jPane2Layout);
         jPane2Layout.setHorizontalGroup(
             jPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPane2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 655, Short.MAX_VALUE)
-                .addContainerGap())
+            .addGap(0, 675, Short.MAX_VALUE)
         );
         jPane2Layout.setVerticalGroup(
             jPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPane2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 241, Short.MAX_VALUE)
-                .addContainerGap())
+            .addGap(0, 263, Short.MAX_VALUE)
         );
 
         jABAS.addTab("Help", jPane2);
@@ -327,7 +314,7 @@ public class Interface extends javax.swing.JFrame {
         }
 
         for(int i=0; i<Util.matriz.length; i++)
-        grafos[i] = new Grafo(i);
+            grafos[i] = new Grafo(i);
 
         jBexibir.setEnabled(true);
         jBprof.setEnabled(true);
@@ -340,7 +327,7 @@ public class Interface extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Os grafos foram gerados com sucesso!");
             jBprim.setEnabled(true);
             jBkrus.setEnabled(true);
-            jBconex.setEnabled(true);
+            jBconex.setEnabled(false);
 
         } else {
             JOptionPane.showMessageDialog(null, "Os digrafos foram gerados com sucesso!");
@@ -404,9 +391,9 @@ public class Interface extends javax.swing.JFrame {
 
     private void jBexibirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBexibirActionPerformed
         if (jTBmatriz.isSelected())
-        Util.imprimirMatrizAdj(Util.matriz);
+            Util.imprimirMatrizAdj(Util.matriz);
         else
-        Util.imprimirListaAdj(Util.lista);
+            Util.imprimirListaAdj(Util.lista);
     }//GEN-LAST:event_jBexibirActionPerformed
 
     private void jBellActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBellActionPerformed
@@ -488,14 +475,12 @@ public class Interface extends javax.swing.JFrame {
     private javax.swing.JButton jBprof;
     private javax.swing.JPanel jPane1;
     private javax.swing.JPanel jPane2;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToggleButton jTBlista;
     private javax.swing.JToggleButton jTBmatriz;
     private javax.swing.JLabel jTalg;
     private javax.swing.JLabel jTbuscas;
     private javax.swing.JTextField jTcaminho;
     private javax.swing.JLabel jTexibir;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel jTrepres;
     private javax.swing.JLabel jTtitle;
     private javax.swing.JLabel jTtxt;
