@@ -7,7 +7,7 @@ public class Grafo {
 	private int chave;
 	private int predecessor;
 	private int distancia;
-        private int tempoChegada;
+    private int tempoChegada;
 	private int tempoFim;	
 	
 	public int getChave() {
