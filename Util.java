@@ -378,5 +378,23 @@ public abstract class Util {
         return true;
     }
 
+    public static void Kruskal(){
+        ArrayList<Integer[]> floresta;
+        floresta = new ArrayList<>();
+        ArrayList<Aresta> arestas;
+        arestas = new ArrayList<>();
+        int numArestas = 0;
+        for(int i=0; i<Util.matriz.length; i++){
+            floresta.add(new Integer[Util.matriz.length]);
+            floresta.get(i)[0] = i;
+        }
+        for(int i=0;i<Util.matriz.length;i++){
+            for(int j=0;j<Util.matriz.length;j++){
+                if(Util.matriz[i][j] != 0)
+                    arestas.set(numArestas++, new Aresta(i, j, Util.matriz[i][j])); 
+            }
+        }
+        
+    }
     
 }
