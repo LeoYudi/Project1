@@ -5,8 +5,9 @@ public class Aresta {
     private int valor;
     private int chave2;
 
-    public Aresta(int chave, int valor) {
+    public Aresta(int chave, int chave2, int valor) {
         this.chave = chave;
+        this.chave = chave2;
         this.valor = valor;
     }
     
