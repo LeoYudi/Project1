@@ -38,7 +38,7 @@ public abstract class Util {
             n3 = Integer.parseInt(numeros[2]);  // Valor da aresta
             linha = buffRead.readLine();
              
-            if(aux == 0) {                      // Digrafo
+            if(aux == 0) {                      // Grafo
                 aresta = new Aresta(n1,n2,n3);
                 lista[n1].add(aresta);
                 aresta = new Aresta(n2,n1,n3);
@@ -48,7 +48,7 @@ public abstract class Util {
                 matriz[n2][n1] = n3;
             }      
                 
-            else {                              // Grafo
+            else {                              // Dígrafo
                 aresta = new Aresta(n1,n2,n3);
                 lista[n1].add(aresta);
                    
