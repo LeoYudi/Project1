@@ -324,16 +324,16 @@ public class Interface extends javax.swing.JFrame {
         jBell.setEnabled(true);
 
         if (aux == 1) {
-            JOptionPane.showMessageDialog(null, "Os grafos foram gerados com sucesso!");
-            jBprim.setEnabled(true);
-            jBkrus.setEnabled(true);
-            jBconex.setEnabled(false);
-
-        } else {
             JOptionPane.showMessageDialog(null, "Os digrafos foram gerados com sucesso!");
             jBprim.setEnabled(false);
             jBkrus.setEnabled(false);
             jBconex.setEnabled(false);
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Os grafos foram gerados com sucesso!");
+            jBprim.setEnabled(true);
+            jBkrus.setEnabled(true);
+            jBconex.setEnabled(true);
         }
     }//GEN-LAST:event_jBgerarActionPerformed
 
