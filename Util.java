@@ -378,27 +378,6 @@ public abstract class Util {
         return true;
     }
 
-    public static void Kruskal(){
-        ArrayList<ArrayList<Integer>> floresta;
-        floresta = new ArrayList<>();
-        Aresta[] arestas = null;
-        ArrayList<Aresta> sol;
-        sol = new ArrayList<>();
-        int numArestas = 0;
-        for(int i=0; i<Util.matriz.length; i++){
-            floresta.add(new ArrayList<>());
-            floresta.get(i).add(i);
-        }
-        for(int i=0;i<Util.matriz.length;i++){
-            for(int j=0;j<Util.matriz.length;j++){
-                if(Util.matriz[i][j] != 0)
-                    arestas[numArestas] = new Aresta(i, j, matriz[i][j]);
-            }
-        }
-        Util.bubbleSort(arestas);
-        
-    }
-    
     private static void bubbleSort(Aresta arestas[]){
         boolean troca = true;
         Aresta aux;
@@ -414,5 +393,44 @@ public abstract class Util {
             }
         }
     }
+
+    public static boolean verificaArvore(ArrayList<ArrayList<Integer>> floresta, int a, int b){
+        for(int i=0;i<floresta.get(a).size();i++){
+            if(floresta.get(a).get(i) == b) return true;
+        }
+        for(int i=0;i<floresta.get(b).size();i++){
+            if(floresta.get(a).get(i) == a) return true;
+        }
+        return false;
+    }
+    
+    public static void KruskalMatriz(){
+        ArrayList<ArrayList<Integer>> floresta;
+        floresta = new ArrayList<>();
+        Aresta[] arestas = null;
+        ArrayList<Aresta> sol;
+        sol = new ArrayList<>();
+        int numArestas = 0;
+        for(int i=0; i<Util.matriz.length; i++){
+            floresta.add(new ArrayList<>());
+            floresta.get(i).add(i);
+        }
+        for(int i=0;i<Util.matriz.length;i++){
+            for(int j=0;j<Util.matriz.length;j++){
+                if(Util.matriz[i][j] != 0)
+                    arestas[numArestas++] = new Aresta(i, j, matriz[i][j]);
+            }
+        }
+        Util.bubbleSort(arestas);
+
+        for(int i=0;i<numArestas;i++){
+            if(Util.verificaArvore(floresta, arestas[i].getChave, arestas[i].getChave2)){
+                sol.add(arestas[i]);
+                
+            }
+        }
+        
+    }
+    
     
 }
