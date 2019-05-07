@@ -299,21 +299,17 @@ public class Interface extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_formWindowGainedFocus
 
-    private void jBprimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBprimActionPerformed
-        
-    }//GEN-LAST:event_jBprimActionPerformed
-
     private void jBgerarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBgerarActionPerformed
         String caminho = jTcaminho.getText();
         int aux;
         try {
-            aux = Util.criarGrafos(caminho);
+            aux = Funcionalidade.criarGrafos(caminho);
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, "O caminho para o arquivo texto nao existe!");
             return;
         }
 
-        for(int i=0; i<Util.matriz.length; i++)
+        for(int i=0; i<Funcionalidade.matriz.length; i++)
             grafos[i] = new Grafo(i);
 
         jBexibir.setEnabled(true);
@@ -342,11 +338,11 @@ public class Interface extends javax.swing.JFrame {
 
         do
         ini = Integer.valueOf(
-            JOptionPane.showInputDialog("Escolha o grafo inicial entre 0 e " + Util.matriz.length + ":"));
+            JOptionPane.showInputDialog("Escolha o grafo inicial entre 0 e " + Funcionalidade.matriz.length + ":"));
         while (!Util.isValid(ini, -1));
 
         do
-        fim = Integer.valueOf(JOptionPane.showInputDialog("Escolha o grafo final entre 0 e " + Util.matriz.length
+        fim = Integer.valueOf(JOptionPane.showInputDialog("Escolha o grafo final entre 0 e " + Funcionalidade.matriz.length
             + ", com excessao do grafo inicial " + ini + ":"));
     while (!Util.isValid(fim, ini));
 
@@ -357,16 +353,16 @@ public class Interface extends javax.swing.JFrame {
         switch (aux) {
             case 0:
             if (jTBmatriz.isSelected())
-            Util.caminhoUVProfundidadeM(ini, fim);
+                Funcionalidade.verifCaminhoProfundidadeM(ini, fim);
             else
-            Util.caminhoUVProfundidadeL(ini, fim);
+                Funcionalidade.verifCaminhoProfundidadeL(ini, fim);
             break;
 
             case 1:
             if (jTBmatriz.isSelected())
-            Util.caminhoUVLarguraM(ini, fim);
+                Funcionalidade.verifCaminhoLarguraM(ini, fim);
             else
-            Util.caminhoUVLarguraL(ini, fim);
+                Funcionalidade.verifCaminhoLarguraL(ini, fim);
             break;
         }
     }//GEN-LAST:event_jBcamActionPerformed
@@ -376,7 +372,7 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_jTcaminhoActionPerformed
 
     private void jBconexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBconexActionPerformed
-        Util.verificarConexo(this.grafos);
+        Funcionalidade.verificarConexo();
     }//GEN-LAST:event_jBconexActionPerformed
 
     private void jTBlistaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTBlistaActionPerformed
@@ -391,43 +387,51 @@ public class Interface extends javax.swing.JFrame {
 
     private void jBexibirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBexibirActionPerformed
         if (jTBmatriz.isSelected())
-            Util.imprimirMatrizAdj(Util.matriz);
+            Util.imprimirMatrizAdj(Funcionalidade.matriz);
         else
-            Util.imprimirListaAdj(Util.lista);
+            Util.imprimirListaAdj(Funcionalidade.lista);
     }//GEN-LAST:event_jBexibirActionPerformed
-
-    private void jBellActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBellActionPerformed
-        // BELL
-    }//GEN-LAST:event_jBellActionPerformed
 
     private void jBlargActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBlargActionPerformed
         int ini = Util.grafoInicial();
 
         if (jTBmatriz.isSelected())
-        grafos = Util.buscaLarguraM(ini);
+            grafos = Funcionalidade.buscaLarguraM(ini);
         else
-        grafos = Util.buscaLarguraL(ini);
+            grafos = Funcionalidade.buscaLarguraL(ini);
+        
         Util.exibirLargura(grafos, ini);
     }//GEN-LAST:event_jBlargActionPerformed
-
-    private void jBdijActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBdijActionPerformed
-        // DIJKSTRA
-    }//GEN-LAST:event_jBdijActionPerformed
 
     private void jBprofActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBprofActionPerformed
         int ini = Util.grafoInicial();
 
         if (jTBmatriz.isSelected())
-        grafos = Util.buscaProfundidadeM(ini);
+            grafos = Funcionalidade.buscaProfundidadeM(ini);
         else
-        grafos = Util.buscaProfundidadeL(ini);
+            grafos = Funcionalidade.buscaProfundidadeL(ini);
+        
         Util.exibirProfundidade(grafos, ini);
     }//GEN-LAST:event_jBprofActionPerformed
 
     private void jBkrusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBkrusActionPerformed
-        // KRUSKAL
+        for (int i=0; i<grafos.length; i++){
+            System.out.println(grafos[i].getPredecessor()+"\n");
+        }
     }//GEN-LAST:event_jBkrusActionPerformed
-        
+    
+    private void jBprimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBprimActionPerformed
+        // PRIM
+    }//GEN-LAST:event_jBprimActionPerformed
+
+    private void jBellActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBellActionPerformed
+        // BELL
+    }//GEN-LAST:event_jBellActionPerformed
+
+    private void jBdijActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBdijActionPerformed
+        // DIJKSTRA
+    }//GEN-LAST:event_jBdijActionPerformed
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

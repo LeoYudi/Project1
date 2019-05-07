@@ -3,12 +3,12 @@ package main;
 import java.util.ArrayList;
 
 public class Grafo {
-	private char marcador;
-	private int chave;
-	private int predecessor;
-	private int distancia;
+    private char marcador;
+    private int chave;
+    private int predecessor;
+    private int distancia;
     private int tempoChegada;
-	private int tempoFim;	
+    private int tempoFim;	
 	
 	public int getChave() {
             return chave;
