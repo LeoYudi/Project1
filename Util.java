@@ -381,8 +381,9 @@ public abstract class Util {
     public static void Kruskal(){
         ArrayList<ArrayList<Integer>> floresta;
         floresta = new ArrayList<>();
-        ArrayList<Aresta> arestas;
-        arestas = new ArrayList<>();
+        Aresta[] arestas = null;
+        ArrayList<Aresta> sol;
+        sol = new ArrayList<>();
         int numArestas = 0;
         for(int i=0; i<Util.matriz.length; i++){
             floresta.add(new ArrayList<>());
@@ -391,10 +392,27 @@ public abstract class Util {
         for(int i=0;i<Util.matriz.length;i++){
             for(int j=0;j<Util.matriz.length;j++){
                 if(Util.matriz[i][j] != 0)
-                    arestas.set(numArestas++, new Aresta(i, j, Util.matriz[i][j])); 
+                    arestas[numArestas] = new Aresta(i, j, matriz[i][j]);
             }
         }
+        Util.bubbleSort(arestas);
         
+    }
+    
+    private static void bubbleSort(Aresta arestas[]){
+        boolean troca = true;
+        Aresta aux;
+        while (troca) {
+            troca = false;
+            for (int i = 0; i < arestas.length - 1; i++) {
+                if (arestas[i].getValor() > arestas[i + 1].getValor()) {
+                    aux = arestas[i];
+                    arestas[i] = arestas[i + 1];
+                    arestas[i + 1] = aux;
+                    troca = true;
+                }
+            }
+        }
     }
     
 }
