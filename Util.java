@@ -107,12 +107,12 @@ public abstract class Util {
             			grafos[i].getTempoFim());
     }
 
-    public static void bubbleSort(Aresta arestas[]){
+    public static void bubbleSort(Aresta arestas[], int numArestas){
         boolean troca = true;
-        Aresta aux;
+        Aresta aux = null;
         while (troca) {
             troca = false;
-            for (int i = 0; i < arestas.length - 1; i++) {
+            for (int i = 0; i < numArestas; i++) {
                 if (arestas[i].getValor() > arestas[i + 1].getValor()) {
                     aux = arestas[i];
                     arestas[i] = arestas[i + 1];
@@ -122,6 +122,7 @@ public abstract class Util {
             }
         }
     }
+    
     public static void inicializa(Grafo[] grafos, int noInicial) {
         for(int i = 0; i < grafos.length; i++) {
             grafos[i].setDistancia(Integer.MAX_VALUE);

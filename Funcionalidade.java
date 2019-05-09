@@ -433,15 +433,20 @@ public abstract class Funcionalidade {
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz.length; j++) {
                 if (matriz[i][j] != 0)
-                    arestas[numArestas++] = new Aresta(i, j, matriz[i][j]);
+                    arestas[numArestas++] = new Aresta(j, i, matriz[i][j]);
             }
         }
-        Util.bubbleSort(arestas);
+        Util.bubbleSort(arestas,numArestas);
 
         for (int i = 0; i < numArestas; i++) 
             if(verificaArvore(floresta, arestas[i].getChave(), arestas[i].getChave2()))
                 sol.add(arestas[i]);
-        System.out.println("\n\n"+sol);
+        
+        System.out.println("A arvore geradora minima e composta pelas arestas : ");
+        
+        for(int i=0;i<sol.size();i++){
+            System.out.println(sol.get(i).getChave2()+" -> "+sol.get(i).getChave());
+        }
     }
     
     public static void PrimMatriz(int ini){
