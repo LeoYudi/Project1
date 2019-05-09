@@ -6,22 +6,16 @@ import java.io.IOException;
 import java.util.*;
 import javax.swing.*;
 
-public abstract class Util {
-
-    public static int[][] matriz;
-    public static ArrayList<Aresta> lista[];        
-
-    
-         
+public abstract class Util {         
     public static boolean isValid(int grafo, int restricao) {
         if (restricao != -1) { // O grafo nao pode ter a mesma chave do int "restricao"
-            if (grafo < 0 || grafo > Util.matriz.length || grafo == restricao) {
+            if (grafo < 0 || grafo > Funcionalidade.matriz.length || grafo == restricao) {
                 JOptionPane.showMessageDialog(null, "O grafo inserido nao eh valido!");
                 return false;
             } else
                 return true;
         } else { // Nao ha nenhuma restricao
-            if (grafo < 0 || grafo > Util.matriz.length) {
+            if (grafo < 0 || grafo > Funcionalidade.matriz.length) {
                 JOptionPane.showMessageDialog(null, "O grafo inserido nao eh valido!");
                 return false;
             } else
