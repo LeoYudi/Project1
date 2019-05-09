@@ -1,6 +1,7 @@
 package main;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 public class Interface extends javax.swing.JFrame {
@@ -39,6 +40,8 @@ public class Interface extends javax.swing.JFrame {
         jTalg = new javax.swing.JLabel();
         jBprim = new javax.swing.JButton();
         jPane2 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Menu");
@@ -267,15 +270,20 @@ public class Interface extends javax.swing.JFrame {
 
         jABAS.addTab("Main", jPane1);
 
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jTextArea1.setText("\t\tFormato do arquivo texto base\n\n<sinalizador>\t\t// 0 - grafo, 1 - dígrafo\n<numero_de_grafos>\n<chave1> <chave2> <valor1>\t// definição das arestas\n<chave3> <chave4> <valor2>\n.\n.\n.\n\n\t\tInformações\n- Para grafos não-ponderados, colocar '0' no valor.\n- Caso um campo preenchivel seja deixado em branco, o problema será abortado.\n- ");
+        jScrollPane1.setViewportView(jTextArea1);
+
         javax.swing.GroupLayout jPane2Layout = new javax.swing.GroupLayout(jPane2);
         jPane2.setLayout(jPane2Layout);
         jPane2Layout.setHorizontalGroup(
             jPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 675, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 675, Short.MAX_VALUE)
         );
         jPane2Layout.setVerticalGroup(
             jPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 263, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
         );
 
         jABAS.addTab("Help", jPane2);
@@ -335,20 +343,30 @@ public class Interface extends javax.swing.JFrame {
 
     private void jBcamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBcamActionPerformed
         int ini, fim;
+        System.out.println("\n\n\n\n\n");
+        
+        
+        try {
+            do
+                ini = Integer.valueOf(JOptionPane.showInputDialog("Escolha o grafo inicial entre 0 e " + 
+                    Funcionalidade.matriz.length + ":"));
+            while (!Util.isValid(ini, -1));
+        } catch (NumberFormatException ex) {
+            return;
+        }
+        
+        try {
+            do
+                fim = Integer.valueOf(JOptionPane.showInputDialog("Escolha o grafo final entre 0 e " + Funcionalidade.matriz.length
+                    + ", com excessao do grafo inicial " + ini + ":"));
+            while (!Util.isValid(fim, ini));
+        } catch (NumberFormatException ex) {
+            return;
+        }       
 
-        do
-        ini = Integer.valueOf(
-            JOptionPane.showInputDialog("Escolha o grafo inicial entre 0 e " + Funcionalidade.matriz.length + ":"));
-        while (!Util.isValid(ini, -1));
-
-        do
-        fim = Integer.valueOf(JOptionPane.showInputDialog("Escolha o grafo final entre 0 e " + Funcionalidade.matriz.length
-            + ", com excessao do grafo inicial " + ini + ":"));
-    while (!Util.isValid(fim, ini));
-
-    String opcoes[] = { "Profundidade", "Largura" };
-    int aux = JOptionPane.showOptionDialog(null, "Deseja procurar o caminho com qual tipo de busca?\n\n",
-        "Tipo de busca", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcoes, null);
+        String opcoes[] = { "Profundidade", "Largura" };
+        int aux = JOptionPane.showOptionDialog(null, "Deseja procurar o caminho com qual tipo de busca?\n\n",
+            "Tipo de busca", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcoes, null);
 
         switch (aux) {
             case 0:
@@ -372,7 +390,15 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_jTcaminhoActionPerformed
 
     private void jBconexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBconexActionPerformed
-        Funcionalidade.verificarConexo();
+        System.out.println("\n\n\n\n\n");
+        grafos = Funcionalidade.buscaProfundidadeL(0);
+        ArrayList<Integer> desconexos;
+        if((desconexos = Funcionalidade.verificarConexo()) == null)
+            System.out.println("O grafo eh conexo!\n");
+        else { 
+            System.out.println("O grafo eh desconexo!\n    Existem "+desconexos.size()+" arvores:\n\n");
+            
+        }
     }//GEN-LAST:event_jBconexActionPerformed
 
     private void jTBlistaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTBlistaActionPerformed
@@ -386,6 +412,7 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_jTBmatrizActionPerformed
 
     private void jBexibirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBexibirActionPerformed
+        System.out.println("\n\n\n\n\n");
         if (jTBmatriz.isSelected())
             Util.imprimirMatrizAdj(Funcionalidade.matriz);
         else
@@ -393,8 +420,10 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_jBexibirActionPerformed
 
     private void jBlargActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBlargActionPerformed
-        int ini = Util.grafoInicial();
-
+        int ini;
+        if((ini = Util.grafoInicial()) == -1)
+            return;
+        System.out.println("\n\n\n\n\n");
         if (jTBmatriz.isSelected())
             grafos = Funcionalidade.buscaLarguraM(ini);
         else
@@ -404,8 +433,10 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_jBlargActionPerformed
 
     private void jBprofActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBprofActionPerformed
-        int ini = Util.grafoInicial();
-
+        int ini;
+        if((ini = Util.grafoInicial()) == -1)
+            return;
+        System.out.println("\n\n\n\n\n");
         if (jTBmatriz.isSelected())
             grafos = Funcionalidade.buscaProfundidadeM(ini);
         else
@@ -415,21 +446,25 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_jBprofActionPerformed
 
     private void jBkrusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBkrusActionPerformed
+        System.out.println("\n\n\n\n\n");
         for (int i=0; i<grafos.length; i++){
-            System.out.println(grafos[i].getPredecessor()+"\n");
+            System.out.println(grafos[i].getChave()+" <- "+grafos[i].getPredecessor()+"\n");
         }
     }//GEN-LAST:event_jBkrusActionPerformed
     
     private void jBprimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBprimActionPerformed
         // PRIM
+        System.out.println("\n\n\n\n\n");
     }//GEN-LAST:event_jBprimActionPerformed
 
     private void jBellActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBellActionPerformed
         // BELL
+        System.out.println("\n\n\n\n\n");
     }//GEN-LAST:event_jBellActionPerformed
 
     private void jBdijActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBdijActionPerformed
         // DIJKSTRA
+        System.out.println("\n\n\n\n\n");
     }//GEN-LAST:event_jBdijActionPerformed
 
     public static void main(String args[]) {
@@ -479,12 +514,14 @@ public class Interface extends javax.swing.JFrame {
     private javax.swing.JButton jBprof;
     private javax.swing.JPanel jPane1;
     private javax.swing.JPanel jPane2;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToggleButton jTBlista;
     private javax.swing.JToggleButton jTBmatriz;
     private javax.swing.JLabel jTalg;
     private javax.swing.JLabel jTbuscas;
     private javax.swing.JTextField jTcaminho;
     private javax.swing.JLabel jTexibir;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel jTrepres;
     private javax.swing.JLabel jTtitle;
     private javax.swing.JLabel jTtxt;

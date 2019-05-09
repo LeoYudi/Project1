@@ -71,12 +71,12 @@ public class Grafo {
         this.setMarcador('c');
         this.setTempoChegada(tempo++);
         //System.out.println("Cheguei no vertice "+this.chave+" no tempo "+this.tempoChegada);
-        int atual = -1;
+        int prox = -1;
         for(int i=0;i<arestas[this.getChave()].size();i++){
-            grafos[arestas[this.getChave()].get(i).getChave()].setPredecessor(atual);
-            atual = arestas[this.getChave()].get(i).getChave();
-            if(grafos[atual].getMarcador() == 'b'){
-                tempo = grafos[atual].visita(grafos, tempo, arestas);
+            prox = arestas[this.getChave()].get(i).getChave();
+            if(grafos[prox].getMarcador() == 'b'){
+                grafos[prox].setPredecessor(this.chave);
+                tempo = grafos[prox].visita(grafos, tempo, arestas);
             }
         }
         this.setMarcador('p');
@@ -93,16 +93,7 @@ public class Grafo {
         for(int i=0;i<arestas.length;i++){
             if(arestas[this.getChave()][i] != 0){
                 if(grafos[i].getMarcador() == 'b'){
-                    if(tempo == 1)
-                        this.setPredecessor(-1);
-                    else{
-                        for(int j=0;j<grafos.length;j++){
-                            if(grafos[j].getTempoChegada() == tempo-1){
-                                grafos[i].setPredecessor(grafos[j].getChave());
-                                break;
-                            }
-                        }
-                    }
+                    grafos[i].setPredecessor(this.chave);
                     tempo = grafos[i].visita(grafos, tempo, arestas);
                 }
             }
