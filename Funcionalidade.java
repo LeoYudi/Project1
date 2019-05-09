@@ -301,6 +301,123 @@ public abstract class Funcionalidade {
         return true;
     }
 
+    public static Grafo[] dijkstraL(int noInicial) { // Lista de adjacencia
+        Grafo[] grafos = new Grafo[lista.length];
+        Queue<Grafo> S = new LinkedList<>();
+        Queue<Grafo> Q = new LinkedList<>();
+        Grafo u;
+        
+        for(int i = 0; i < grafos.length; i++) {
+            grafos[i] = new Grafo(i);
+            Q.add(grafos[i]);
+        }
+        
+        Util.inicializa(grafos, noInicial);
+        while(!Q.isEmpty()) {
+            u = Util.extraiMinimo(Q);
+            Q.remove(u);
+            S.add(u);
+            for(int i = 0; i < lista[u.getChave()].size(); i++) {
+                Grafo v = grafos[lista[u.getChave()].get(i).getChave()];
+                if(v != null) {
+                    if(Util.buscaNoS(S, v.getChave()) == 0) {
+                        Util.relaxa(u, v, lista[u.getChave()].get(i).getValor());
+                    }
+                }
+            }
+        }
+        return grafos;
+    }
+    
+    public static Grafo[] dijkstraM(int noInicial) { // Matriz de adjacencia
+        Grafo[] grafos = new Grafo[matriz.length];
+        Queue<Grafo> S = new LinkedList<>();
+        Queue<Grafo> Q = new LinkedList<>();
+        Grafo u;
+        int cont;
+        
+        for(int i = 0; i < grafos.length; i++) {
+            grafos[i] = new Grafo(i);
+            Q.add(grafos[i]);
+        }
+        
+        Util.inicializa(grafos, noInicial);
+        while(!Q.isEmpty()) {
+            cont = -1;
+            u = Util.extraiMinimo(Q);
+            Q.remove(u);
+            S.add(u);
+            for(int i = 0; i < matriz[u.getChave()].length; i++) {
+                if (matriz[u.getChave()][i] != 0) {
+                    cont++;
+                    Grafo v = grafos[i];
+                    if(v != null) {
+                        if(Util.buscaNoS(S, i) == 0) {
+                            Util.relaxa(u, v, lista[u.getChave()].get(cont).getValor());
+                        }
+                    }
+                }
+            }
+        }
+        return grafos;
+    }
+    
+    public static void verifCaminhoDijkstraL(int u, int v) {
+        Grafo grafos[];
+        grafos = dijkstraL(u);
+        int atual = v;
+        int caminho[];
+        caminho = new int[grafos.length];
+        int i;
+
+        for (i = 0; i < grafos.length; i++)
+            caminho[i] = -1;
+        for (i = 0; atual != u; i++) {
+            caminho[i] = atual;
+            if (grafos[atual].getPredecessor() != -1)
+                atual = grafos[atual].getPredecessor();
+            else
+                break;
+        }
+        caminho[i] = atual;
+        if (caminho[i] != u)
+            System.out.println("Não existe caminho entre " + u + " e " + v);
+        else {
+            for (; i > 0; i--)
+                System.out.printf(caminho[i] + " --> ");
+            System.out.printf(caminho[i] + "");
+        }
+        
+    }
+       
+    public static void verifCaminhoDijkstraM(int u, int v) {
+        Grafo grafos[];
+        grafos = dijkstraM(u);
+        int atual = v;
+        int caminho[];
+        caminho = new int[grafos.length];
+        int i;
+
+        for (i = 0; i < grafos.length; i++)
+            caminho[i] = -1;
+        for (i = 0; atual != u; i++) {
+            caminho[i] = atual;
+            if (grafos[atual].getPredecessor() != -1)
+                atual = grafos[atual].getPredecessor();
+            else
+                break;
+        }
+        caminho[i] = atual;
+        if (caminho[i] != u)
+            System.out.println("Não existe caminho entre " + u + " e " + v);
+        else {
+            for (; i > 0; i--)
+                System.out.printf(caminho[i] + " --> ");
+            System.out.printf(caminho[i] + "");
+        }
+
+    }
+        
     public static void KruskalMatriz() {
         ArrayList<ArrayList<Integer>> floresta;
         floresta = new ArrayList<>();
@@ -325,5 +442,21 @@ public abstract class Funcionalidade {
             if(verificaArvore(floresta, arestas[i].getChave(), arestas[i].getChave2()))
                 sol.add(arestas[i]);
         System.out.println("\n\n"+sol);
+    }
+    
+    public static void PrimMatriz(int ini){
+        ArrayList<Aresta> sol = new ArrayList<>();
+        ArrayList<Grafo> Q = new ArrayList<>();
+        Grafo u, v;
+        for (int i=0; i<Interface.grafos.length; i++){
+            Q.add(Interface.grafos[i]);
+            Q.get(i).setChave(30000);
+            Q.get(i).setPredecessor(-1);          
+        }
+        Q.get(ini).setChave(0);
+        
+        while(!Q.isEmpty()){
+            
+        }
     }
 }

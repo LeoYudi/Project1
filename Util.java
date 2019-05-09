@@ -5,6 +5,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 import javax.swing.*;
+import static main.Funcionalidade.verifCaminhoDijkstraL;
+import static main.Funcionalidade.verifCaminhoDijkstraM;
 
 public abstract class Util {         
     public static boolean isValid(int grafo, int restricao) {
@@ -104,8 +106,6 @@ public abstract class Util {
             			grafos[i].getTempoChegada(),
             			grafos[i].getTempoFim());
     }
-	
-    
 
     public static void bubbleSort(Aresta arestas[]){
         boolean troca = true;
@@ -120,6 +120,76 @@ public abstract class Util {
                     troca = true;
                 }
             }
+        }
+    }
+    public static void inicializa(Grafo[] grafos, int noInicial) {
+        for(int i = 0; i < grafos.length; i++) {
+            grafos[i].setDistancia(Integer.MAX_VALUE);
+        }
+        grafos[noInicial].setDistancia(0);
+    }
+    
+    public static void relaxa(Grafo u, Grafo v, int peso) {
+        int soma = u.getDistancia() + peso;
+        if(v.getDistancia() > soma) {
+            v.setDistancia(soma);
+            v.setPredecessor(u.getChave());
+        }
+    }
+    
+    public static Grafo extraiMinimo(Queue<Grafo> Q) {
+        Grafo atual = null;
+        int menor = Integer.MAX_VALUE;
+        int flag = 0;
+        
+        LinkedList<Grafo> novaQ = new LinkedList<>(Q); /* cópia da fila */
+        LinkedList<Grafo> aux = new LinkedList<>(); 
+        aux = (LinkedList) novaQ.clone();
+        
+        while(!aux.isEmpty()) { /* procurando a menor distância */
+            atual = aux.poll();
+            if(atual.getDistancia() < menor) {
+                menor = atual.getDistancia();
+            }
+        }
+        
+        aux = (LinkedList) novaQ.clone();
+        while(!aux.isEmpty() && flag == 0) { /* procurando o vértive com a menor distância */
+            atual = aux.poll();
+            if(atual.getDistancia() == menor) {
+                flag = 1;
+            }
+        }
+        
+        return atual;
+    }
+    
+    public static int buscaNoS(Queue<Grafo> S, int valor) {
+        Queue<Grafo> aux = S;
+        Grafo atual;
+        
+        while(!aux.isEmpty()) {
+            atual = aux.poll();
+            if(atual.getChave() == valor) {
+                return 1; /* encontrou o vértice em S */
+            }
+        }
+        return 0; /* não encontrou o vértice em S */
+    }
+    
+    public static void imprCaminhoDijkstraL(Grafo grafos[], int ini) {
+        for(int i = 0; i < grafos.length; i++) {
+            System.out.println("");
+            verifCaminhoDijkstraL(ini, i);
+            System.out.println("\nDistância = " + grafos[i].getDistancia());
+        }
+    }
+    
+    public static void imprCaminhoDijkstraM(Grafo grafos[], int ini) {
+        for(int i = 0; i < grafos.length; i++) {
+            System.out.println("");
+            verifCaminhoDijkstraM(ini, i);
+            System.out.println("\nDistância = " + grafos[i].getDistancia());
         }
     }
 }

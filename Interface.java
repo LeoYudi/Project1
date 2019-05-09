@@ -475,7 +475,16 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_jBellActionPerformed
 
     private void jBdijActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBdijActionPerformed
-        // DIJKSTRA
+        int ini = Util.grafoInicial();
+
+        if(jTBmatriz.isSelected()) {
+            grafos = Funcionalidade.dijkstraM(ini);
+            Util.imprCaminhoDijkstraM(grafos, ini);
+        }
+        else {
+            grafos = Funcionalidade.dijkstraL(ini);
+            Util.imprCaminhoDijkstraL(grafos, ini);
+        }
         System.out.println("\n\n\n\n\n");
     }//GEN-LAST:event_jBdijActionPerformed
 
