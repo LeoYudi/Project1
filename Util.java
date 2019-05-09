@@ -1,10 +1,12 @@
 package main;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.*;
 import javax.swing.*;
 
-public abstract class Util {
-
+public abstract class Util {         
     public static boolean isValid(int grafo, int restricao) {
         if (restricao != -1) { // O grafo nao pode ter a mesma chave do int "restricao"
             if (grafo < 0 || grafo > Funcionalidade.matriz.length || grafo == restricao) {
@@ -64,6 +66,8 @@ public abstract class Util {
 	}
     }
 	
+    
+   
     public static void exibirLargura(Grafo[] grafos, int noInicial) {	
         System.out.printf("Grafo raiz: %d\n\n", noInicial);
         for (int i=0; i<grafos.length; i++) {
@@ -86,6 +90,8 @@ public abstract class Util {
         }
     }
     
+    
+	
     public static void exibirProfundidade(Grafo[] grafos, int noInicial) {
     	System.out.printf("\n\n\n\nGrafo inicial: %d\nTempo de chegada: %d\nTempo de saida: %d\n\n",
     			noInicial,
@@ -98,8 +104,10 @@ public abstract class Util {
             			grafos[i].getTempoChegada(),
             			grafos[i].getTempoFim());
     }
+	
+    
 
-    public static void bubbleSort(Aresta arestas[]) {
+    public static void bubbleSort(Aresta arestas[]){
         boolean troca = true;
         Aresta aux;
         while (troca) {
@@ -114,6 +122,4 @@ public abstract class Util {
             }
         }
     }
-    
-    
 }
