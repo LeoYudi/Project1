@@ -392,12 +392,23 @@ public class Interface extends javax.swing.JFrame {
     private void jBconexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBconexActionPerformed
         System.out.println("\n\n\n\n\n");
         grafos = Funcionalidade.buscaProfundidadeL(0);
+        int tempo, tempoant=1;
         ArrayList<Integer> desconexos;
         if((desconexos = Funcionalidade.verificarConexo()) == null)
             System.out.println("O grafo eh conexo!\n");
         else { 
-            System.out.println("O grafo eh desconexo!\n    Existem "+desconexos.size()+" arvores:\n\n");
-            
+            System.out.println("O grafo eh desconexo!\n    Existem "+desconexos.size()+" subarvores:\n");
+            // Montando arvores
+            for (int i=0; i<desconexos.size(); i++){
+                tempo = grafos[desconexos.get(i)].getTempoFim();    // Tempo de saida da raiz, para encontrar os componentes da mesma
+                System.out.printf("Subarvore de raiz "+desconexos.get(i)+" : \n"+desconexos.get(i)+"  ");
+                for (int j=0; j<Interface.grafos.length; j++) {
+                    if ((grafos[j].getTempoFim() < tempo) && (grafos[j].getTempoFim() > tempoant))
+                        System.out.printf(grafos[j].getChave()+"  ");
+                }
+                tempoant = tempo;
+                System.out.println("\n");
+            }
         }
     }//GEN-LAST:event_jBconexActionPerformed
 
@@ -447,14 +458,15 @@ public class Interface extends javax.swing.JFrame {
 
     private void jBkrusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBkrusActionPerformed
         System.out.println("\n\n\n\n\n");
-        for (int i=0; i<grafos.length; i++){
-            System.out.println(grafos[i].getChave()+" <- "+grafos[i].getPredecessor()+"\n");
-        }
+        
     }//GEN-LAST:event_jBkrusActionPerformed
     
     private void jBprimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBprimActionPerformed
         // PRIM
         System.out.println("\n\n\n\n\n");
+        for (int i=0; i<grafos.length; i++){
+            System.out.println(grafos[i].getChave()+" <- "+grafos[i].getPredecessor()+"\n");
+        }
     }//GEN-LAST:event_jBprimActionPerformed
 
     private void jBellActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBellActionPerformed
