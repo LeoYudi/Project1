@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
-import javax.swing.*;
 
 //import jdk.javadoc.internal.doclets.formats.html.SourceToHTMLConverter;
 
@@ -138,7 +137,6 @@ public abstract class Funcionalidade {
                 tempo = grafos[i].visita(grafos, tempo, matriz);
             }
         }
-        // System.out.printf("Retornou a raiz\n\n\n\n");
         return grafos;
     }
 
@@ -153,12 +151,11 @@ public abstract class Funcionalidade {
                 tempo = grafos[i].visita(grafos, tempo, lista);
             }
         }
-        for (int i = 0; i < noInicial; i++) { // Percorrendo os nos anteriores ao incial
+        for (int i = 0; i < noInicial; i++) { // Percorrendo os nos anteriores ao inicial
             if (grafos[i].getMarcador() == 'b') {
                 tempo = grafos[i].visita(grafos, tempo, lista);
             }
         }
-        // System.out.printf("Retornou a raiz\n\n\n\n");
         return grafos;
     }
 
@@ -187,8 +184,6 @@ public abstract class Funcionalidade {
                 System.out.printf(caminho[i] + " --> ");
             System.out.printf(caminho[i] + "");
         }
-        System.out.println("");
-
     }
 
     public static void verifCaminhoProfundidadeL(int u, int v) {
@@ -274,9 +269,14 @@ public abstract class Funcionalidade {
         }
     }
 
-    public static boolean verificarConexo() {
-
-        return true;
+    public static ArrayList<Integer> verificarConexo() {
+        ArrayList<Integer> desconexos = new ArrayList();
+        for (int i=0; i<Interface.grafos.length; i++)
+            if (Interface.grafos[i].getPredecessor() == -1)     // Encontrando os grafos sem predecessores, possivelmente desconexos
+                desconexos.add(Interface.grafos[i].getChave());        
+        if(desconexos.size() == 1)          // Apenas a raiz nao possui predecessor
+            return null;
+        else return desconexos;             // Mais de um grafo nao possui predecessor, portanto esta desconexo
     }
 
     public static boolean verificaArvore(ArrayList<ArrayList<Integer>> floresta, int a, int b) {

@@ -25,16 +25,14 @@ public abstract class Util {
 
     public static int grafoInicial() {
         int ini;
-        while (true) {
-            try {
-                do
-                    ini = Integer.valueOf(JOptionPane.showInputDialog("             Insira o vertice inicial:"));
-                while (!Util.isValid(ini, -1));
-                break;
+        try {
+            do
+                ini = Integer.valueOf(JOptionPane.showInputDialog("             Insira o vertice inicial:"));
+            while (!Util.isValid(ini, -1));
             } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(null, "        Insira um vertice!");
+                return -1;
             }
-        }
+        
         return ini;
     }
 
@@ -54,7 +52,6 @@ public abstract class Util {
     }
 	
     public static void imprimirListaAdj(ArrayList<Aresta>[] lista) {
-    	System.out.println("\n\n\n\n\n");
         for(int i=0; i<lista.length; i++) {
             System.out.printf("%d ", i);
             if(lista[i].isEmpty()) {
@@ -66,13 +63,13 @@ public abstract class Util {
                     System.out.printf("-> %d ",lista[i].get(j).getChave());
                 System.out.println("-> null");
             }
-	    }
+	}
     }
 	
     
    
     public static void exibirLargura(Grafo[] grafos, int noInicial) {	
-        System.out.printf("\n\n\n\nGrafo raiz: %d\n\n", noInicial);
+        System.out.printf("Grafo raiz: %d\n\n", noInicial);
         for (int i=0; i<grafos.length; i++) {
             if(grafos[i].getChave() != noInicial) {
                 System.out.printf("Grafo %d\nDistancia: %d\nCaminho: [%d] ", 
@@ -91,7 +88,6 @@ public abstract class Util {
                 System.out.printf("\n\n");
             }
         }
-        System.out.printf("\n\n\n");        
     }
     
     
@@ -107,7 +103,6 @@ public abstract class Util {
             			grafos[i].getChave(),
             			grafos[i].getTempoChegada(),
             			grafos[i].getTempoFim());
-        System.out.printf("\n\n\n");
     }
 	
     
