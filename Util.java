@@ -117,7 +117,7 @@ public abstract class Util {
     /* Metodo usado no algoritmo de Kruskal */
     public static void bubbleSort(Aresta arestas[], int numArestas){
         boolean troca = true;
-        Aresta aux = null;
+        Aresta aux;
         while (troca) {
             troca = false;
             for (int i = 0; i < numArestas; i++) {
