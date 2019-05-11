@@ -272,6 +272,7 @@ public class Interface extends javax.swing.JFrame {
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
+        jTextArea1.setText("FORMATO DA BASE QUE DEVE SERGUIR O ARQUIVO TEXTO\n\n<sinalizador>\t\t\t// 0 - grafo, 1 - dígrafo\n<numero_de_grafos>\n<vertice1> <vertice2> <valor1>\t// definição das arestas\n<vertice3> <vertice4> <valor2>\n...\n\n\nINFORMAÇÕES\n\t- Para grafos não-ponderados, colocar '0' no valor.\n\t- Caso um campo preenchivel seja deixado em branco, o problema será abortado.\n\t- O limite para o número de arestas é 100\n\n\nFUNÇÕES\n\t- Gerar grafos: gera os grafos com as arestas definidas no arquivo texto.\n\t- Exibir: exibe o grafo da forma escolhida (matriz ou lista).\n\t- Representações:\n\t\t- Matriz Adj: quando selecionado todas as outras funcionalidades irão utilizar uma matriz de adjacência para solucionar os problemas.\n\t\t- Lista Adj: quando selecionado todas as outras funcionalidades irão utilizar uma lista de adjacência para solucionar os problemas.\n\t- Buscas:\n\t\t- Profundidade: reliza uma busca em profundidade no grafo e irá imprimir o tempo de chegada e de saída de cada vértice.\n\t\t- Largura: realiza uma busca em largura no grafo e irá imprimir a distância de cada vértice da raiz escolhida.\n\t- Verificações:\n\t\t- Caminho: verifica se existe um caminho entre dois vértices escolhidos caso exista.\n\t\t- Conexo: verifica se o grafo é conexo, se não imprimi as subárvores existentes.\n\t- Algoritmos:");
         jScrollPane1.setViewportView(jTextArea1);
 
         javax.swing.GroupLayout jPane2Layout = new javax.swing.GroupLayout(jPane2);
@@ -282,7 +283,7 @@ public class Interface extends javax.swing.JFrame {
         );
         jPane2Layout.setVerticalGroup(
             jPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
         );
 
         jABAS.addTab("Help", jPane2);
