@@ -8,7 +8,7 @@ public class Aresta {
     
     public Aresta(int chave, int chave2, int valor) {
         this.chave = chave;
-        this.chave = chave2;
+        this.chave2 = chave2;
         this.valor = valor;
     }
     

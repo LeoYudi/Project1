@@ -275,25 +275,25 @@ public abstract class Funcionalidade {
 
     /* Metodo utilizado no algoritmo de Kruskal */
     public static boolean verificaArvore(ArrayList<ArrayList<Integer>> floresta, int a, int b) {
-        int arvoreA=0, arvoreB=0;
+        int arvoreA=0, arvoreB=0, tamanho;
         for(int i=0;i<floresta.size();i++){
             for(int j=0;j<floresta.get(i).size();j++){
                 if(floresta.get(i).get(j) == a){
-                    arvoreA = a;
+                    arvoreA = i;
                 }
                 if(floresta.get(i).get(j) == b)
-                    arvoreB = b;
+                    arvoreB = i;
             }
         }
-        for(int i=0;i<floresta.get(arvoreA).size();i++){
-            if(floresta.get(arvoreA).get(i) == b)
-                return false;
+        tamanho = floresta.get(arvoreB).size();
+        if(arvoreA == arvoreB) return false;
+        else{
+            for(int i=0;i<tamanho;i++){
+                floresta.get(arvoreA).add(floresta.get(arvoreB).get(0));
+                floresta.get(arvoreB).remove(0);
+            }
+            return true;
         }
-        for(int i=0;i<floresta.get(arvoreA).size();i++){
-            floresta.get(arvoreA).add(floresta.get(arvoreB).get(i));
-            floresta.get(arvoreB).remove(i);
-        }
-        return true;
     }
     
     /* Algoritmo Kruskal utilizando matriz de adjacencia */
@@ -310,9 +310,9 @@ public abstract class Funcionalidade {
             floresta.get(i).add(i);
         }
         for (int i = 0; i < matriz.length; i++) {
-            for (int j = 0; j < matriz.length; j++) {
+            for (int j = i; j < matriz.length; j++) {
                 if (matriz[i][j] != -1)
-                    arestas[numArestas++] = new Aresta(j, i, matriz[i][j]);
+                    arestas[numArestas++] = new Aresta(i, j, matriz[i][j]);
             }
         }
         Util.bubbleSort(arestas, numArestas);

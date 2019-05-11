@@ -120,7 +120,7 @@ public abstract class Util {
         Aresta aux;
         while (troca) {
             troca = false;
-            for (int i = 0; i < numArestas; i++) {
+            for (int i = 0; i < numArestas - 1; i++) {
                 if (arestas[i].getValor() > arestas[i + 1].getValor()) {
                     aux = arestas[i];
                     arestas[i] = arestas[i + 1];
