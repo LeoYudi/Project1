@@ -5,20 +5,18 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
-//import jdk.javadoc.internal.doclets.formats.html.SourceToHTMLConverter;
-
 public abstract class Funcionalidade {
 
     public static int[][] matriz;
     public static ArrayList<Aresta> lista[];
 
+    /* Metodo usado para ler o arquivo texto e construir os grafos */
     public static int criarGrafos(String caminho) throws IOException {
         BufferedReader buffRead;
         buffRead = new BufferedReader(new FileReader(caminho.concat(".txt")));
-
         int numGrafos, aux;
-        aux = Integer.parseInt(buffRead.readLine()); // Lendo primeira linha, grafo ou digrafo
-        numGrafos = Integer.parseInt(buffRead.readLine()); // Lendo segunda linha, numero de grafos
+        aux = Integer.parseInt(buffRead.readLine());    /* Lendo primeira linha, grafo ou digrafo */
+        numGrafos = Integer.parseInt(buffRead.readLine());      /* Lendo segunda linha, numero de grafos */
         Interface.grafos = new Grafo[numGrafos];
         matriz = new int[numGrafos][numGrafos];
         lista = new ArrayList[numGrafos];
@@ -39,21 +37,17 @@ public abstract class Funcionalidade {
             n2 = Integer.parseInt(numeros[1]); // Vertice 2 da aresta
             n3 = Integer.parseInt(numeros[2]); // Valor da aresta
             linha = buffRead.readLine();
-
             if (aux == 0) { // Grafo
                 aresta = new Aresta(n1, n2, n3);
                 lista[n1].add(aresta);
                 aresta = new Aresta(n2, n1, n3);
                 lista[n2].add(aresta);
-
                 matriz[n1][n2] = n3;
                 matriz[n2][n1] = n3;
             }
-
             else { // Dígrafo
                 aresta = new Aresta(n1, n2, n3);
                 lista[n1].add(aresta);
-
                 matriz[n1][n2] = n3;
             }
         }
@@ -61,14 +55,14 @@ public abstract class Funcionalidade {
         return aux;
     }
 
-    public static Grafo[] buscaLarguraM(int noInicial) { // Matriz de adjacencia
+    /* Busca em largura utilizando matriz de adjacencia */
+    public static Grafo[] buscaLarguraM(int noInicial) {
         Grafo[] grafos = new Grafo[matriz.length];
         Queue<Grafo> fila = new LinkedList<>();
         Grafo atual;
         for (int i = 0; i < grafos.length; i++) {
             grafos[i] = new Grafo(i);
         }
-
         grafos[noInicial].setMarcador('c');
         grafos[noInicial].setDistancia(0);
         fila.add(grafos[noInicial]);
@@ -91,7 +85,8 @@ public abstract class Funcionalidade {
         }
         return grafos;
     }
-
+    
+    /* Busca em largura utilizando lista de adjacencia */
     public static Grafo[] buscaLarguraL(int noInicial) { // Lista de adjacencia
         Grafo[] grafos = new Grafo[lista.length];
         Queue<Grafo> fila = new LinkedList<>();
@@ -99,7 +94,6 @@ public abstract class Funcionalidade {
         for (int i = 0; i < grafos.length; i++) {
             grafos[i] = new Grafo(i);
         }
-
         grafos[noInicial].setMarcador('c');
         grafos[noInicial].setDistancia(0);
         fila.add(grafos[noInicial]);
@@ -121,12 +115,12 @@ public abstract class Funcionalidade {
         return grafos;
     }
 
-    public static Grafo[] buscaProfundidadeM(int noInicial) { // Matriz de adjacencia
+    /* Busca em profundidade utilizando matriz de adjacencia */
+    public static Grafo[] buscaProfundidadeM(int noInicial) {
         Grafo[] grafos = new Grafo[matriz.length];
         for (int i = 0; i < grafos.length; i++)
             grafos[i] = new Grafo(i);
         int tempo = 1;
-
         for (int i = noInicial; i < grafos.length; i++) { // Iniciando pelo no inicial
             if (grafos[i].getMarcador() == 'b') {
                 tempo = grafos[i].visita(grafos, tempo, matriz);
@@ -140,12 +134,12 @@ public abstract class Funcionalidade {
         return grafos;
     }
 
-    public static Grafo[] buscaProfundidadeL(int noInicial) { // Lista de adjacencia
+    /* Busca em profundidade utilizando lista de adjacencia */
+    public static Grafo[] buscaProfundidadeL(int noInicial) {
         Grafo[] grafos = new Grafo[lista.length];
         for (int i = 0; i < grafos.length; i++)
             grafos[i] = new Grafo(i);
         int tempo = 1;
-
         for (int i = noInicial; i < grafos.length; i++) { // Iniciando pelo no inicial
             if (grafos[i].getMarcador() == 'b') {
                 tempo = grafos[i].visita(grafos, tempo, lista);
@@ -159,6 +153,7 @@ public abstract class Funcionalidade {
         return grafos;
     }
 
+    /* Verificar caminho entre 2 vertices utilizando busca em profundidade e matriz de adjacencia */
     public static void verifCaminhoProfundidadeM(int u, int v) {
         Grafo grafos[];
         grafos = buscaProfundidadeM(u);
@@ -166,7 +161,6 @@ public abstract class Funcionalidade {
         int caminho[];
         caminho = new int[grafos.length];
         int i;
-
         for (i = 0; i < grafos.length; i++)
             caminho[i] = -1;
         for (i = 0; atual != u; i++) {
@@ -186,6 +180,7 @@ public abstract class Funcionalidade {
         }
     }
 
+    /* Verificar caminho entre 2 vertices utilizando busca em profundidade e lista de adjacencia */
     public static void verifCaminhoProfundidadeL(int u, int v) {
         Grafo grafos[];
         grafos = buscaProfundidadeL(u);
@@ -193,7 +188,6 @@ public abstract class Funcionalidade {
         int caminho[];
         caminho = new int[grafos.length];
         int i;
-
         for (i = 0; i < grafos.length; i++)
             caminho[i] = -1;
         for (i = 0; atual != u; i++) {
@@ -213,6 +207,7 @@ public abstract class Funcionalidade {
         }
     }
 
+    /* Verificar caminho entre 2 vertices utilizando busca em largura e matriz de adjacencia */
     public static void verifCaminhoLarguraM(int u, int v) {
         Grafo grafos[];
         grafos = buscaLarguraM(u);
@@ -220,7 +215,6 @@ public abstract class Funcionalidade {
         int caminho[];
         caminho = new int[grafos.length];
         int i;
-
         for (i = 0; i < grafos.length; i++)
             caminho[i] = -1;
         for (i = 0; atual != u; i++) {
@@ -239,9 +233,9 @@ public abstract class Funcionalidade {
             System.out.printf(caminho[i] + "");
         }
         System.out.println("");
-
     }
 
+    /* Verificar caminho entre 2 vertices utilizando busca em largura e lista de adjacencia */
     public static void verifCaminhoLarguraL(int u, int v) {
         Grafo grafos[];
         grafos = buscaLarguraL(u);
@@ -249,7 +243,6 @@ public abstract class Funcionalidade {
         int caminho[];
         caminho = new int[grafos.length];
         int i;
-
         for (i = 0; i < grafos.length; i++)
             caminho[i] = -1;
         for (i = 0; atual != u; i++) {
@@ -269,8 +262,9 @@ public abstract class Funcionalidade {
         }
     }
 
+    /* Verificar conexidade de um grafo */
     public static ArrayList<Integer> verificarConexo() {
-        ArrayList<Integer> desconexos = new ArrayList();
+        ArrayList<Integer> desconexos = new ArrayList<>();
         for (int i=0; i<Interface.grafos.length; i++)
             if (Interface.grafos[i].getPredecessor() == -1)     // Encontrando os grafos sem predecessores, possivelmente desconexos
                 desconexos.add(Interface.grafos[i].getChave());        
@@ -279,6 +273,7 @@ public abstract class Funcionalidade {
         else return desconexos;             // Mais de um grafo nao possui predecessor, portanto esta desconexo
     }
 
+    /* Metodo utilizado no algoritmo de Kruskal */
     public static boolean verificaArvore(ArrayList<ArrayList<Integer>> floresta, int a, int b) {
         int arvoreA=0, arvoreB=0;
         for(int i=0;i<floresta.size();i++){
@@ -300,36 +295,104 @@ public abstract class Funcionalidade {
         }
         return true;
     }
-
-    public static Grafo[] dijkstraL(int noInicial) { // Lista de adjacencia
-        Grafo[] grafos = new Grafo[lista.length];
-        Queue<Grafo> S = new LinkedList<>();
-        Queue<Grafo> Q = new LinkedList<>();
-        Grafo u;
-        
-        for(int i = 0; i < grafos.length; i++) {
-            grafos[i] = new Grafo(i);
-            Q.add(grafos[i]);
+    
+    /* Algoritmo Kruskal utilizando matriz de adjacencia */
+    public static void KruskalM() {
+        ArrayList<ArrayList<Integer>> floresta;
+        floresta = new ArrayList<>();
+        Aresta[] arestas;
+        arestas = new Aresta[100];
+        ArrayList<Aresta> sol;
+        sol = new ArrayList<>();
+        int numArestas = 0;
+        for (int i = 0; i < matriz.length; i++) {
+            floresta.add(new ArrayList<>());
+            floresta.get(i).add(i);
         }
+        for (int i = 0; i < matriz.length; i++) {
+            for (int j = 0; j < matriz.length; j++) {
+                if (matriz[i][j] != 0)
+                    arestas[numArestas++] = new Aresta(j, i, matriz[i][j]);
+            }
+        }
+        Util.bubbleSort(arestas, numArestas);
+
+        for (int i = 0; i < numArestas; i++)
+            if (verificaArvore(floresta, arestas[i].getChave(), arestas[i].getChave2()))
+                sol.add(arestas[i]);
+
+        System.out.println("A arvore geradora minima e composta pelas arestas : ");
+
+        for (int i = 0; i < sol.size(); i++) {
+            System.out.println(sol.get(i).getChave2() + " -> " + sol.get(i).getChave());
+        }
+    }
+    
+    /* Algoritmo Kruskal utilizando lista de adjacencia */
+    public static void KruskalL() {
         
-        Util.inicializa(grafos, noInicial);
-        while(!Q.isEmpty()) {
-            u = Util.extraiMinimo(Q);
-            Q.remove(u);
-            S.add(u);
-            for(int i = 0; i < lista[u.getChave()].size(); i++) {
-                Grafo v = grafos[lista[u.getChave()].get(i).getChave()];
-                if(v != null) {
-                    if(Util.buscaNoS(S, v.getChave()) == 0) {
-                        Util.relaxa(u, v, lista[u.getChave()].get(i).getValor());
-                    }
+    }
+
+    /* Algoritmo Prim utilizando matriz de adjacencia */
+    public static ArrayList<Aresta> PrimM(int ini) {
+        ArrayList<Aresta> sol = new ArrayList<>();
+        ArrayList<Grafo> Q = new ArrayList<>();
+        Grafo u, v;
+        for (int i = 0; i < Interface.grafos.length; i++) {
+            Q.add(Interface.grafos[i]);
+            Q.get(i).setChave(30000);
+            Q.get(i).setPredecessor(-1);
+        }
+        Q.get(ini).setChave(0);
+
+        while (!Q.isEmpty()) {
+            u = Util.removeMinimo(Q);
+            if (u.getChave() == ini) {
+                Aresta aux = new Aresta(u.getChave(), u.getPredecessor(), matriz[u.getChave()][u.getPredecessor()]);
+                sol.add(aux);
+            }
+            for (int i = 0; i < Interface.grafos.length; i++) {
+                if (matriz[u.getChave()][i] != 0 && matriz[u.getChave()][i] < Interface.grafos[i].getChave()
+                        && Interface.grafos[i].pertence(Q)) {
+                    Interface.grafos[i].setChave(matriz[u.getChave()][i]);
+                    Interface.grafos[i].setPredecessor(u.getChave());
                 }
             }
         }
-        return grafos;
+        return sol;
     }
     
-    public static Grafo[] dijkstraM(int noInicial) { // Matriz de adjacencia
+    /* Algoritmo Prim utilizando lista de adjacencia */
+    public static ArrayList<Aresta> PrimL(int ini) {
+        ArrayList<Aresta> sol = new ArrayList<>();
+        ArrayList<Grafo> Q = new ArrayList<>();
+        Grafo u, v;
+        for (int i = 0; i < Interface.grafos.length; i++) {
+            Q.add(Interface.grafos[i]);
+            Q.get(i).setChave(30000);
+            Q.get(i).setPredecessor(-1);
+        }
+        Q.get(ini).setChave(0);
+
+        while (!Q.isEmpty()) {
+            u = Util.removeMinimo(Q);
+            if (u.getChave() == ini) {
+                Aresta aux = new Aresta(u.getChave(), u.getPredecessor(), matriz[u.getChave()][u.getPredecessor()]);
+                sol.add(aux);
+            }
+            for (int i = 0; i < Interface.grafos.length; i++) {
+                if (matriz[u.getChave()][i] != 0 && matriz[u.getChave()][i] < Interface.grafos[i].getChave()
+                        && Interface.grafos[i].pertence(Q)) {
+                    Interface.grafos[i].setChave(matriz[u.getChave()][i]);
+                    Interface.grafos[i].setPredecessor(u.getChave());
+                }
+            }
+        }
+        return sol;
+    }
+
+    /* Algoritmo Dijkstra utilizando matriz de adjacencia */
+    public static Grafo[] dijkstraM(int noInicial) { 
         Grafo[] grafos = new Grafo[matriz.length];
         Queue<Grafo> S = new LinkedList<>();
         Queue<Grafo> Q = new LinkedList<>();
@@ -355,6 +418,34 @@ public abstract class Funcionalidade {
                         if(Util.buscaNoS(S, i) == 0) {
                             Util.relaxa(u, v, lista[u.getChave()].get(cont).getValor());
                         }
+                    }
+                }
+            }
+        }
+        return grafos;
+    }
+    /* Algoritmo Dijkstra utilizando lista de adjacencia */
+    public static Grafo[] dijkstraL(int noInicial) { 
+        Grafo[] grafos = new Grafo[lista.length];
+        Queue<Grafo> S = new LinkedList<>();
+        Queue<Grafo> Q = new LinkedList<>();
+        Grafo u;
+        
+        for(int i = 0; i < grafos.length; i++) {
+            grafos[i] = new Grafo(i);
+            Q.add(grafos[i]);
+        }
+        
+        Util.inicializa(grafos, noInicial);
+        while(!Q.isEmpty()) {
+            u = Util.extraiMinimo(Q);
+            Q.remove(u);
+            S.add(u);
+            for(int i = 0; i < lista[u.getChave()].size(); i++) {
+                Grafo v = grafos[lista[u.getChave()].get(i).getChave()];
+                if(v != null) {
+                    if(Util.buscaNoS(S, v.getChave()) == 0) {
+                        Util.relaxa(u, v, lista[u.getChave()].get(i).getValor());
                     }
                 }
             }
@@ -418,122 +509,76 @@ public abstract class Funcionalidade {
 
     }
         
-    public static void KruskalMatriz() {
-        ArrayList<ArrayList<Integer>> floresta;
-        floresta = new ArrayList<>();
-        Aresta[] arestas;
-        arestas = new Aresta[100];
-        ArrayList<Aresta> sol;
-        sol = new ArrayList<>();
-        int numArestas = 0;
-        for (int i = 0; i < matriz.length; i++) {
-            floresta.add(new ArrayList<>());
-            floresta.get(i).add(i);
-        }
-        for (int i = 0; i < matriz.length; i++) {
-            for (int j = 0; j < matriz.length; j++) {
-                if (matriz[i][j] != 0)
-                    arestas[numArestas++] = new Aresta(j, i, matriz[i][j]);
-            }
-        }
-        Util.bubbleSort(arestas,numArestas);
 
-        for (int i = 0; i < numArestas; i++) 
-            if(verificaArvore(floresta, arestas[i].getChave(), arestas[i].getChave2()))
-                sol.add(arestas[i]);
-        
-        System.out.println("A arvore geradora minima e composta pelas arestas : ");
-        
-        for(int i=0;i<sol.size();i++){
-            System.out.println(sol.get(i).getChave2()+" -> "+sol.get(i).getChave());
-        }
-    }
-    
-    public static void PrimMatriz(int ini){
-        ArrayList<Aresta> sol = new ArrayList<>();
-        ArrayList<Grafo> Q = new ArrayList<>();
-        Grafo u, v;
-        for (int i=0; i<Interface.grafos.length; i++){
-            Q.add(Interface.grafos[i]);
-            Q.get(i).setChave(30000);
-            Q.get(i).setPredecessor(-1);          
-        }
-        Q.get(ini).setChave(0);
-        
-        while(!Q.isEmpty()){
-            
-        }
-    }
 
     public static Grafo[] bellmanFordL(int noInicial, boolean cicloNeg) { // Lista de adjacencia
         Grafo[] grafos = new Grafo[lista.length];
-        for (int i = 0; i < grafos.length; i++) {
+        for(int i = 0; i < grafos.length; i++) {
             grafos[i] = new Grafo(i);
         }
-
+        
         Util.inicializa(grafos, noInicial);
-        for (int i = 1; i <= Interface.grafos.length - 1; i++) {
-            for (int j = 0; j < lista.length; j++) { /* para cada aresta */
-                for (int k = 0; k < lista[j].size(); k++) { /* (u,v) do grafo */
+        for(int i = 1; i <= Interface.grafos.length-1; i++) {
+            for(int j = 0; j < lista.length; j++) {        /* para cada aresta */
+                for(int k = 0; k < lista[j].size(); k++) { /*  (u,v) do grafo  */
                     Util.relaxa(grafos[j], grafos[lista[j].get(k).getChave()], lista[j].get(k).getValor());
                 }
             }
         }
-
-        for (int j = 0; j < lista.length; j++) { /* para cada aresta */
-            for (int k = 0; k < lista[j].size(); k++) { /* (u,v) do grafo */
-                if (grafos[lista[j].get(k).getChave()].getDistancia() > grafos[j].getDistancia()
-                        + lista[j].get(k).getValor()) {
+        
+        for(int j = 0; j < lista.length; j++) {            /* para cada aresta */
+            for(int k = 0; k < lista[j].size(); k++) {     /*  (u,v) do grafo  */
+                if(grafos[lista[j].get(k).getChave()].getDistancia() > grafos[j].getDistancia() + lista[j].get(k).getValor()) {
                     cicloNeg = false;
                 }
             }
         }
-
+        
         return grafos;
     }
-
+    
     public static Grafo[] bellmanFordM(int noInicial, boolean cicloNeg) { // Matriz de adjacencia
         Grafo[] grafos = new Grafo[matriz.length];
-        for (int i = 0; i < grafos.length; i++) {
+        for(int i = 0; i < grafos.length; i++) {
             grafos[i] = new Grafo(i);
         }
-
+        
         int cont;
         Util.inicializa(grafos, noInicial);
-        for (int i = 1; i <= Interface.grafos.length; i++) {
-            for (int j = 0; j < matriz.length; j++) { /* para cada */
-                cont = -1; /* aresta(u,v) */
-                for (int k = 0; k < matriz[j].length; k++) { /* do grafo */
-                    if (matriz[j][k] != 0) {
+        for(int i = 1; i <= Interface.grafos.length-1; i++) {
+            for(int j = 0; j < matriz.length; j++) {        /*  para cada  */
+                cont = -1;                                  /* aresta(u,v) */
+                for(int k = 0; k < matriz[j].length; k++) { /*  do grafo   */
+                    if(matriz[j][k] != 0) {
                         cont++;
                         Grafo v = grafos[k];
-                        if (v != null) {
+                        if(v != null) {
                             Util.relaxa(grafos[j], v, lista[j].get(cont).getValor());
                         }
                     }
                 }
             }
         }
-
-        for (int j = 0; j < matriz.length; j++) { /* para cada */
-            cont = -1; /* aresta(u,v) */
-            for (int k = 0; k < matriz[j].length; k++) { /* do grafo */
-                if (matriz[j][k] != 0) {
+        
+        for(int j = 0; j < matriz.length; j++) {        /*  para cada  */
+            cont = -1;                                  /* aresta(u,v) */
+            for(int k = 0; k < matriz[j].length; k++) { /*  do grafo   */
+                if(matriz[j][k] != 0) {
                     cont++;
                     Grafo v = grafos[k];
-                    if (v != null) {
-                        if (v.getDistancia() > grafos[j].getDistancia() + lista[j].get(cont).getValor()) {
+                    if(v != null) {
+                        if(v.getDistancia() > grafos[j].getDistancia() + lista[j].get(cont).getValor()) {
                             cicloNeg = false;
                         }
                     }
                 }
             }
         }
-
+        
         return grafos;
-
+        
     }
-
+    
     public static void verifCaminhoBellmanL(int u, int v) {
         Grafo grafos[];
         boolean cicloNeg = true;
@@ -560,9 +605,9 @@ public abstract class Funcionalidade {
                 System.out.printf(caminho[i] + " --> ");
             System.out.printf(caminho[i] + "");
         }
-
+        
     }
-
+    
     public static void verifCaminhoBellmanM(int u, int v) {
         Grafo grafos[];
         boolean cicloNeg = true;
@@ -589,8 +634,7 @@ public abstract class Funcionalidade {
                 System.out.printf(caminho[i] + " --> ");
             System.out.printf(caminho[i] + "");
         }
-
+        
     }
-
-
+    
 }
