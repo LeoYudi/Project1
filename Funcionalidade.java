@@ -464,4 +464,133 @@ public abstract class Funcionalidade {
             
         }
     }
+
+    public static Grafo[] bellmanFordL(int noInicial, boolean cicloNeg) { // Lista de adjacencia
+        Grafo[] grafos = new Grafo[lista.length];
+        for (int i = 0; i < grafos.length; i++) {
+            grafos[i] = new Grafo(i);
+        }
+
+        Util.inicializa(grafos, noInicial);
+        for (int i = 1; i <= Interface.grafos.length - 1; i++) {
+            for (int j = 0; j < lista.length; j++) { /* para cada aresta */
+                for (int k = 0; k < lista[j].size(); k++) { /* (u,v) do grafo */
+                    Util.relaxa(grafos[j], grafos[lista[j].get(k).getChave()], lista[j].get(k).getValor());
+                }
+            }
+        }
+
+        for (int j = 0; j < lista.length; j++) { /* para cada aresta */
+            for (int k = 0; k < lista[j].size(); k++) { /* (u,v) do grafo */
+                if (grafos[lista[j].get(k).getChave()].getDistancia() > grafos[j].getDistancia()
+                        + lista[j].get(k).getValor()) {
+                    cicloNeg = false;
+                }
+            }
+        }
+
+        return grafos;
+    }
+
+    public static Grafo[] bellmanFordM(int noInicial, boolean cicloNeg) { // Matriz de adjacencia
+        Grafo[] grafos = new Grafo[matriz.length];
+        for (int i = 0; i < grafos.length; i++) {
+            grafos[i] = new Grafo(i);
+        }
+
+        int cont;
+        Util.inicializa(grafos, noInicial);
+        for (int i = 1; i <= Interface.grafos.length; i++) {
+            for (int j = 0; j < matriz.length; j++) { /* para cada */
+                cont = -1; /* aresta(u,v) */
+                for (int k = 0; k < matriz[j].length; k++) { /* do grafo */
+                    if (matriz[j][k] != 0) {
+                        cont++;
+                        Grafo v = grafos[k];
+                        if (v != null) {
+                            Util.relaxa(grafos[j], v, lista[j].get(cont).getValor());
+                        }
+                    }
+                }
+            }
+        }
+
+        for (int j = 0; j < matriz.length; j++) { /* para cada */
+            cont = -1; /* aresta(u,v) */
+            for (int k = 0; k < matriz[j].length; k++) { /* do grafo */
+                if (matriz[j][k] != 0) {
+                    cont++;
+                    Grafo v = grafos[k];
+                    if (v != null) {
+                        if (v.getDistancia() > grafos[j].getDistancia() + lista[j].get(cont).getValor()) {
+                            cicloNeg = false;
+                        }
+                    }
+                }
+            }
+        }
+
+        return grafos;
+
+    }
+
+    public static void verifCaminhoBellmanL(int u, int v) {
+        Grafo grafos[];
+        boolean cicloNeg = true;
+        grafos = bellmanFordL(u, cicloNeg);
+        int atual = v;
+        int caminho[];
+        caminho = new int[grafos.length];
+        int i;
+
+        for (i = 0; i < grafos.length; i++)
+            caminho[i] = -1;
+        for (i = 0; atual != u; i++) {
+            caminho[i] = atual;
+            if (grafos[atual].getPredecessor() != -1)
+                atual = grafos[atual].getPredecessor();
+            else
+                break;
+        }
+        caminho[i] = atual;
+        if (caminho[i] != u)
+            System.out.println("Não existe caminho entre " + u + " e " + v);
+        else {
+            for (; i > 0; i--)
+                System.out.printf(caminho[i] + " --> ");
+            System.out.printf(caminho[i] + "");
+        }
+
+    }
+
+    public static void verifCaminhoBellmanM(int u, int v) {
+        Grafo grafos[];
+        boolean cicloNeg = true;
+        grafos = bellmanFordM(u, cicloNeg);
+        int atual = v;
+        int caminho[];
+        caminho = new int[grafos.length];
+        int i;
+
+        for (i = 0; i < grafos.length; i++)
+            caminho[i] = -1;
+        for (i = 0; atual != u; i++) {
+            caminho[i] = atual;
+            if (grafos[atual].getPredecessor() != -1)
+                atual = grafos[atual].getPredecessor();
+            else
+                break;
+        }
+        caminho[i] = atual;
+        if (caminho[i] != u)
+            System.out.println("Não existe caminho entre " + u + " e " + v);
+        else {
+            for (; i > 0; i--)
+                System.out.printf(caminho[i] + " --> ");
+            System.out.printf(caminho[i] + "");
+        }
+
+    }
+
+
 }

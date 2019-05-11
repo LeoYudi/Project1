@@ -193,4 +193,20 @@ public abstract class Util {
             System.out.println("\nDistância = " + grafos[i].getDistancia());
         }
     }
+
+    public static void imprCaminhoBellmanL(Grafo grafos[], int ini) {
+        for (int i = 0; i < grafos.length; i++) {
+            System.out.println("");
+            Funcionalidade.verifCaminhoBellmanL(ini, i);
+            System.out.println("\nDistância = " + grafos[i].getDistancia());
+        }
+    }
+
+    public static void imprCaminhoBellmanM(Grafo grafos[], int ini) {
+        for (int i = 0; i < grafos.length; i++) {
+            System.out.println("");
+            Funcionalidade.verifCaminhoBellmanM(ini, i);
+            System.out.println("\nDistância = " + grafos[i].getDistancia());
+        }
+    }
 }

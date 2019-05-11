@@ -470,7 +470,27 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_jBprimActionPerformed
 
     private void jBellActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBellActionPerformed
-        // BELL
+        int ini = Util.grafoInicial();
+        boolean cicloNeg = true;
+
+        if(jTBmatriz.isSelected()) {
+            grafos = Funcionalidade.bellmanFordM(ini, cicloNeg);
+            if(cicloNeg == false) {
+                System.out.println("O grafo possui ciclo de peso negativo");
+            }
+            else {
+                Util.imprCaminhoBellmanM(grafos, ini);
+            }
+        }
+        else {
+            grafos = Funcionalidade.bellmanFordL(ini, cicloNeg);
+            if(cicloNeg == false) {
+                System.out.println("O grafo possui ciclo de peso negativo");
+            }
+            else {
+                Util.imprCaminhoBellmanL(grafos, ini);
+            }
+        }
         System.out.println("\n\n\n\n\n");
     }//GEN-LAST:event_jBellActionPerformed
 
