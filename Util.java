@@ -1,22 +1,19 @@
 package main;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.*;
 import javax.swing.*;
-import static main.Funcionalidade.verifCaminhoDijkstraL;
-import static main.Funcionalidade.verifCaminhoDijkstraM;
 
-public abstract class Util {         
+public abstract class Util {
+  
+    /* Metodo usado na interface para verificar se um grafo pode ou nao ser selecionado pelo usuario */
     public static boolean isValid(int grafo, int restricao) {
-        if (restricao != -1) { // O grafo nao pode ter a mesma chave do int "restricao"
+        if (restricao != -1) {  // O grafo nao pode ter a mesma chave do int "restricao"
             if (grafo < 0 || grafo > Funcionalidade.matriz.length || grafo == restricao) {
                 JOptionPane.showMessageDialog(null, "O grafo inserido nao eh valido!");
                 return false;
             } else
                 return true;
-        } else { // Nao ha nenhuma restricao
+        } else {    // Nao ha nenhuma restricao, apenas deve ser valido
             if (grafo < 0 || grafo > Funcionalidade.matriz.length) {
                 JOptionPane.showMessageDialog(null, "O grafo inserido nao eh valido!");
                 return false;
@@ -24,53 +21,66 @@ public abstract class Util {
                 return true;
         }
     }
-
+    
+    /* Metodo usado na interface para pedir um vertice inicial valido para o usuario */
     public static int grafoInicial() {
         int ini;
         try {
             do
-                ini = Integer.valueOf(JOptionPane.showInputDialog("             Insira o vertice inicial:"));
+                ini = Integer.valueOf(JOptionPane.showInputDialog("Insira o vertice inicial:"));
             while (!Util.isValid(ini, -1));
             } catch (NumberFormatException ex) {
                 return -1;
             }
-        
         return ini;
     }
 
-    public static void imprimirMatrizAdj(int[][] matriz) {
+    /* Metodo usado para exibir uma matriz de adjacencia */
+    public static void imprMatrizAdj(int[][] matriz) {
         int dim = matriz.length;
         System.out.printf("    0 ");
         for (int i=1; i<dim; i++)
             System.out.printf("%2d ", i);
-        	
         System.out.println();
         for (int i=0; i<dim; i++) {
-        System.out.printf("%2d ", i);
-        for(int j=0; j<dim; j++)
-            System.out.printf("%2d ", matriz[i][j]);
-        System.out.println();
+            System.out.printf("%2d ", i);
+            for(int j=0; j<dim; j++)
+                System.out.printf("%2d ", matriz[i][j]);
+            System.out.println();
         }
     }
 	
-    public static void imprimirListaAdj(ArrayList<Aresta>[] lista) {
+    /* Metodo usado para exibir uma lista de adjacencia */
+    public static void imprListaAdj(ArrayList<Aresta>[] lista) {
         for(int i=0; i<lista.length; i++) {
             System.out.printf("%d ", i);
-            if(lista[i].isEmpty()) {
+            if(lista[i].isEmpty()) 
 		System.out.println("-> null");
-            }
-				
             else {
 		for(int j=0; j<lista[i].size(); j++) 
                     System.out.printf("-> %d ",lista[i].get(j).getChave());
                 System.out.println("-> null");
             }
 	}
-    }
-	
-    
+    }    
    
-    public static void exibirLargura(Grafo[] grafos, int noInicial) {	
+    /* Metodo usado para imprimir o resultado de uma busca em profundidade */
+    public static void imprProfundidade(Grafo[] grafos, int noInicial) {
+    	System.out.printf("\n\n\n\nGrafo inicial: %d\nTempo de chegada: %d\nTempo de saida: %d\n\n",
+    			noInicial,
+    			grafos[noInicial].getTempoChegada(),
+    			grafos[noInicial].getTempoFim());
+        
+        for (int i=0; i<grafos.length; i++) 
+            if(grafos[i].getChave() != noInicial) 
+            	System.out.printf("Grafo %d\nTempo de chegada: %d\nTempo de saida: %d\n\n",
+            			grafos[i].getChave(),
+            			grafos[i].getTempoChegada(),
+            			grafos[i].getTempoFim());
+    }
+    
+    /* Metodo usado para imprimir o resultado de uma busca em largura */
+    public static void imprLargura(Grafo[] grafos, int noInicial) {	
         System.out.printf("Grafo raiz: %d\n\n", noInicial);
         for (int i=0; i<grafos.length; i++) {
             if(grafos[i].getChave() != noInicial) {
@@ -92,21 +102,19 @@ public abstract class Util {
         }
     }
     
-    
-	
-    public static void exibirProfundidade(Grafo[] grafos, int noInicial) {
-    	System.out.printf("\n\n\n\nGrafo inicial: %d\nTempo de chegada: %d\nTempo de saida: %d\n\n",
-    			noInicial,
-    			grafos[noInicial].getTempoChegada(),
-    			grafos[noInicial].getTempoFim());
-        for (int i=0; i<grafos.length; i++) 
-            if(grafos[i].getChave() != noInicial) 
-            	System.out.printf("Grafo %d\nTempo de chegada: %d\nTempo de saida: %d\n\n",
-            			grafos[i].getChave(),
-            			grafos[i].getTempoChegada(),
-            			grafos[i].getTempoFim());
+    /* Metodo usado no algoritmo de Prim */
+    public static Grafo removeMinimo(ArrayList<Grafo> lista) {
+        int min = 30000, imin = -1;
+        for (int i = 0; i < lista.size(); i++) {
+            if (lista.get(i).getChave() < min) {
+                imin = i;
+                min = lista.get(i).getChave();
+            }
+        }
+        return lista.remove(imin);
     }
 
+    /* Metodo usado no algoritmo de Kruskal */
     public static void bubbleSort(Aresta arestas[], int numArestas){
         boolean troca = true;
         Aresta aux = null;
@@ -123,13 +131,14 @@ public abstract class Util {
         }
     }
     
+    /* Metodo usado no algoritmo de Dijkstra */
     public static void inicializa(Grafo[] grafos, int noInicial) {
-        for(int i = 0; i < grafos.length; i++) {
-            grafos[i].setDistancia(Integer.MAX_VALUE);
-        }
+        for(int i = 0; i < grafos.length; i++) 
+            grafos[i].setDistancia(30000);
         grafos[noInicial].setDistancia(0);
     }
     
+    /* Metodo usado no algoritmo de Dijkstra */
     public static void relaxa(Grafo u, Grafo v, int peso) {
         int soma = u.getDistancia() + peso;
         if(v.getDistancia() > soma) {
@@ -138,22 +147,20 @@ public abstract class Util {
         }
     }
     
+    /* Metodo usado no algoritmo de Dijkstra */
     public static Grafo extraiMinimo(Queue<Grafo> Q) {
         Grafo atual = null;
         int menor = Integer.MAX_VALUE;
         int flag = 0;
-        
         LinkedList<Grafo> novaQ = new LinkedList<>(Q); /* cópia da fila */
         LinkedList<Grafo> aux = new LinkedList<>(); 
         aux = (LinkedList) novaQ.clone();
-        
         while(!aux.isEmpty()) { /* procurando a menor distância */
             atual = aux.poll();
             if(atual.getDistancia() < menor) {
                 menor = atual.getDistancia();
             }
         }
-        
         aux = (LinkedList) novaQ.clone();
         while(!aux.isEmpty() && flag == 0) { /* procurando o vértive com a menor distância */
             atual = aux.poll();
@@ -161,51 +168,53 @@ public abstract class Util {
                 flag = 1;
             }
         }
-        
         return atual;
     }
     
+    /* Metodo usado no algoritmo de Dijkstra */
     public static int buscaNoS(Queue<Grafo> S, int valor) {
         Queue<Grafo> aux = S;
         Grafo atual;
-        
         while(!aux.isEmpty()) {
             atual = aux.poll();
-            if(atual.getChave() == valor) {
+            if(atual.getChave() == valor)
                 return 1; /* encontrou o vértice em S */
-            }
         }
         return 0; /* não encontrou o vértice em S */
     }
     
-    public static void imprCaminhoDijkstraL(Grafo grafos[], int ini) {
+    /* Metodo usado para imprimir o resultado do algoritmo de Dijkstra usando matriz de adjacencia */
+    public static void imprCaminhoDijkstraM(Grafo grafos[], int ini) {
         for(int i = 0; i < grafos.length; i++) {
             System.out.println("");
-            verifCaminhoDijkstraL(ini, i);
+            Funcionalidade.verifCaminhoDijkstraM(ini, i);
             System.out.println("\nDistância = " + grafos[i].getDistancia());
         }
     }
     
-    public static void imprCaminhoDijkstraM(Grafo grafos[], int ini) {
+    /* Metodo usado para imprimir o resultado do algoritmo de Dijkstra usando lista de adjacancia*/
+    public static void imprCaminhoDijkstraL(Grafo grafos[], int ini) {
         for(int i = 0; i < grafos.length; i++) {
             System.out.println("");
-            verifCaminhoDijkstraM(ini, i);
+            Funcionalidade.verifCaminhoDijkstraL(ini, i);
             System.out.println("\nDistância = " + grafos[i].getDistancia());
         }
     }
 
-    public static void imprCaminhoBellmanL(Grafo grafos[], int ini) {
-        for (int i = 0; i < grafos.length; i++) {
-            System.out.println("");
-            Funcionalidade.verifCaminhoBellmanL(ini, i);
-            System.out.println("\nDistância = " + grafos[i].getDistancia());
-        }
-    }
-
+    /* Metodo usado para imprimir o resultado do algoritmo de Bellman-Ford usando matriz de adjacencia */
     public static void imprCaminhoBellmanM(Grafo grafos[], int ini) {
         for (int i = 0; i < grafos.length; i++) {
             System.out.println("");
             Funcionalidade.verifCaminhoBellmanM(ini, i);
+            System.out.println("\nDistância = " + grafos[i].getDistancia());
+        }
+    }
+    
+    /* Metodo usado para imprimir o resultado do algoritmo de Bellman-Ford usando lista de adjacencia */
+    public static void imprCaminhoBellmanL(Grafo grafos[], int ini) {
+        for (int i = 0; i < grafos.length; i++) {
+            System.out.println("");
+            Funcionalidade.verifCaminhoBellmanL(ini, i);
             System.out.println("\nDistância = " + grafos[i].getDistancia());
         }
     }
