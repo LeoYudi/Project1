@@ -304,10 +304,10 @@ public class Interface extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
-        // TODO add your handling code here:
     }//GEN-LAST:event_formWindowGainedFocus
 
     private void jBgerarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBgerarActionPerformed
+        /* Le o arquivo texto e cria os grafos em memoria */
         String caminho = jTcaminho.getText();
         int aux;
         try {
@@ -316,23 +316,19 @@ public class Interface extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "O caminho para o arquivo texto nao existe!");
             return;
         }
-
-        for(int i=0; i<Funcionalidade.matriz.length; i++)
+        for(int i=0; i<grafos.length; i++)
             grafos[i] = new Grafo(i);
-
         jBexibir.setEnabled(true);
         jBprof.setEnabled(true);
         jBlarg.setEnabled(true);
         jBcam.setEnabled(true);
         jBdij.setEnabled(true);
         jBell.setEnabled(true);
-
         if (aux == 1) {
             JOptionPane.showMessageDialog(null, "Os digrafos foram gerados com sucesso!");
             jBprim.setEnabled(false);
             jBkrus.setEnabled(false);
             jBconex.setEnabled(false);
-
         } else {
             JOptionPane.showMessageDialog(null, "Os grafos foram gerados com sucesso!");
             jBprim.setEnabled(true);
@@ -341,11 +337,61 @@ public class Interface extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jBgerarActionPerformed
 
-    private void jBcamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBcamActionPerformed
-        int ini, fim;
+    private void jTcaminhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTcaminhoActionPerformed
+        // Caminho dos grafos
+    }//GEN-LAST:event_jTcaminhoActionPerformed
+    
+    private void jTBlistaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTBlistaActionPerformed
+        /* Seleciona opcao de armazenamento em lista de adjacencia */
+        jTBlista.setSelected(true);
+        jTBmatriz.setSelected(false);
+    }//GEN-LAST:event_jTBlistaActionPerformed
+    
+    private void jTBmatrizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTBmatrizActionPerformed
+        /* Seleciona opcao de armazenamento em matriz de adjacencia */
+        jTBmatriz.setSelected(true);
+        jTBlista.setSelected(false);
+    }//GEN-LAST:event_jTBmatrizActionPerformed
+    
+    private void jBexibirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBexibirActionPerformed
+        /* Imprime os grafos */
         System.out.println("\n\n\n\n\n");
-        
-        
+        if (jTBmatriz.isSelected())
+            Util.imprMatrizAdj(Funcionalidade.matriz);
+        else
+            Util.imprListaAdj(Funcionalidade.lista);
+    }//GEN-LAST:event_jBexibirActionPerformed
+    
+    private void jBlargActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBlargActionPerformed
+        /* Realiza uma busca em largura */
+        System.out.println("\n\n\n\n\n");
+        int ini;
+        if((ini = Util.grafoInicial()) == -1)
+            return;
+        if (jTBmatriz.isSelected())
+            grafos = Funcionalidade.buscaLarguraM(ini);
+        else
+            grafos = Funcionalidade.buscaLarguraL(ini);
+        Util.imprLargura(grafos, ini);
+    }//GEN-LAST:event_jBlargActionPerformed
+    
+    private void jBprofActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBprofActionPerformed
+        /* Realiza uma busca em profundidade */
+        System.out.println("\n\n\n\n\n");
+        int ini;
+        if((ini = Util.grafoInicial()) == -1)
+            return;
+        if (jTBmatriz.isSelected())
+            grafos = Funcionalidade.buscaProfundidadeM(ini);
+        else
+            grafos = Funcionalidade.buscaProfundidadeL(ini);
+        Util.imprProfundidade(grafos, ini);
+    }//GEN-LAST:event_jBprofActionPerformed
+
+    private void jBcamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBcamActionPerformed
+        /* Verifica existencia de caminho entre 2 vertices */
+        System.out.println("\n\n\n\n\n");
+        int ini, fim;
         try {
             do
                 ini = Integer.valueOf(JOptionPane.showInputDialog("Escolha o grafo inicial entre 0 e " + 
@@ -354,7 +400,6 @@ public class Interface extends javax.swing.JFrame {
         } catch (NumberFormatException ex) {
             return;
         }
-        
         try {
             do
                 fim = Integer.valueOf(JOptionPane.showInputDialog("Escolha o grafo final entre 0 e " + Funcionalidade.matriz.length
@@ -363,7 +408,6 @@ public class Interface extends javax.swing.JFrame {
         } catch (NumberFormatException ex) {
             return;
         }       
-
         String opcoes[] = { "Profundidade", "Largura" };
         int aux = JOptionPane.showOptionDialog(null, "Deseja procurar o caminho com qual tipo de busca?\n\n",
             "Tipo de busca", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcoes, null);
@@ -385,11 +429,8 @@ public class Interface extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jBcamActionPerformed
 
-    private void jTcaminhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTcaminhoActionPerformed
-        // Caminho dos grafos
-    }//GEN-LAST:event_jTcaminhoActionPerformed
-
     private void jBconexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBconexActionPerformed
+        /* Verifica conexidade de um grafo */
         System.out.println("\n\n\n\n\n");
         grafos = Funcionalidade.buscaProfundidadeL(0);
         int tempo, tempoant=1;
@@ -411,92 +452,33 @@ public class Interface extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_jBconexActionPerformed
-
-    private void jTBlistaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTBlistaActionPerformed
-        jTBlista.setSelected(true);
-        jTBmatriz.setSelected(false);
-    }//GEN-LAST:event_jTBlistaActionPerformed
-
-    private void jTBmatrizActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTBmatrizActionPerformed
-        jTBmatriz.setSelected(true);
-        jTBlista.setSelected(false);
-    }//GEN-LAST:event_jTBmatrizActionPerformed
-
-    private void jBexibirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBexibirActionPerformed
-        System.out.println("\n\n\n\n\n");
-        if (jTBmatriz.isSelected())
-            Util.imprimirMatrizAdj(Funcionalidade.matriz);
-        else
-            Util.imprimirListaAdj(Funcionalidade.lista);
-    }//GEN-LAST:event_jBexibirActionPerformed
-
-    private void jBlargActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBlargActionPerformed
-        int ini;
-        if((ini = Util.grafoInicial()) == -1)
-            return;
-        System.out.println("\n\n\n\n\n");
-        if (jTBmatriz.isSelected())
-            grafos = Funcionalidade.buscaLarguraM(ini);
-        else
-            grafos = Funcionalidade.buscaLarguraL(ini);
-        
-        Util.exibirLargura(grafos, ini);
-    }//GEN-LAST:event_jBlargActionPerformed
-
-    private void jBprofActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBprofActionPerformed
-        int ini;
-        if((ini = Util.grafoInicial()) == -1)
-            return;
-        System.out.println("\n\n\n\n\n");
-        if (jTBmatriz.isSelected())
-            grafos = Funcionalidade.buscaProfundidadeM(ini);
-        else
-            grafos = Funcionalidade.buscaProfundidadeL(ini);
-        
-        Util.exibirProfundidade(grafos, ini);
-    }//GEN-LAST:event_jBprofActionPerformed
-
-    private void jBkrusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBkrusActionPerformed
-        System.out.println("\n\n\n\n\n");
-        
-    }//GEN-LAST:event_jBkrusActionPerformed
     
     private void jBprimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBprimActionPerformed
         // PRIM
         System.out.println("\n\n\n\n\n");
-        for (int i=0; i<grafos.length; i++){
-            System.out.println(grafos[i].getChave()+" <- "+grafos[i].getPredecessor()+"\n");
-        }
+        int ini;
+        if((ini = Util.grafoInicial()) == -1)
+            return;
+        if (jTBmatriz.isSelected())
+            grafos = Funcionalidade.buscaProfundidadeM(ini);
+        else
+            grafos = Funcionalidade.buscaProfundidadeL(ini);
+        Util.imprProfundidade(grafos, ini);
     }//GEN-LAST:event_jBprimActionPerformed
 
-    private void jBellActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBellActionPerformed
-        int ini = Util.grafoInicial();
-        boolean cicloNeg = true;
-
-        if(jTBmatriz.isSelected()) {
-            grafos = Funcionalidade.bellmanFordM(ini, cicloNeg);
-            if(cicloNeg == false) {
-                System.out.println("O grafo possui ciclo de peso negativo");
-            }
-            else {
-                Util.imprCaminhoBellmanM(grafos, ini);
-            }
-        }
-        else {
-            grafos = Funcionalidade.bellmanFordL(ini, cicloNeg);
-            if(cicloNeg == false) {
-                System.out.println("O grafo possui ciclo de peso negativo");
-            }
-            else {
-                Util.imprCaminhoBellmanL(grafos, ini);
-            }
-        }
+    private void jBkrusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBkrusActionPerformed
+        // KRUSKAL
         System.out.println("\n\n\n\n\n");
-    }//GEN-LAST:event_jBellActionPerformed
-
+        if (jTBmatriz.isSelected())
+            Funcionalidade.KruskalM();
+        else
+            Funcionalidade.KruskalL();
+    }//GEN-LAST:event_jBkrusActionPerformed
+    
     private void jBdijActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBdijActionPerformed
+        // DJKISTRA
+        System.out.println("\n\n\n\n\n");        
         int ini = Util.grafoInicial();
-
         if(jTBmatriz.isSelected()) {
             grafos = Funcionalidade.dijkstraM(ini);
             Util.imprCaminhoDijkstraM(grafos, ini);
@@ -505,8 +487,28 @@ public class Interface extends javax.swing.JFrame {
             grafos = Funcionalidade.dijkstraL(ini);
             Util.imprCaminhoDijkstraL(grafos, ini);
         }
-        System.out.println("\n\n\n\n\n");
     }//GEN-LAST:event_jBdijActionPerformed
+
+    private void jBellActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBellActionPerformed
+        // BELLMAN
+        System.out.println("\n\n\n\n\n");        
+        int ini = Util.grafoInicial();
+        boolean cicloNeg = true;
+        if(jTBmatriz.isSelected()) {
+            grafos = Funcionalidade.bellmanFordM(ini, cicloNeg);
+            if(cicloNeg == false) 
+                System.out.println("O grafo possui ciclo de peso negativo");
+            else 
+                Util.imprCaminhoBellmanM(grafos, ini);
+        }
+        else {
+            grafos = Funcionalidade.bellmanFordL(ini, cicloNeg);
+            if(cicloNeg == false) 
+                System.out.println("O grafo possui ciclo de peso negativo");
+            else 
+                Util.imprCaminhoBellmanL(grafos, ini);
+        }
+    }//GEN-LAST:event_jBellActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
