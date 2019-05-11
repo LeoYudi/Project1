@@ -24,7 +24,7 @@ public abstract class Funcionalidade {
             Interface.grafos[i] = new Grafo(i);
             lista[i] = new ArrayList<>();
             for (int j = 0; j < numGrafos; j++)
-                matriz[i][j] = 0;
+                matriz[i][j] = -1;
         }
         String linha;
         String[] numeros;
@@ -69,7 +69,7 @@ public abstract class Funcionalidade {
         while (!fila.isEmpty()) {
             atual = fila.remove();
             for (int i = 0; i < matriz[atual.getChave()].length; i++) {
-                if (matriz[atual.getChave()][i] != 0) {
+                if (matriz[atual.getChave()][i] != -1) {
                     Grafo adj = grafos[i];
                     if (adj != null) {
                         if (adj.getMarcador() == 'b') {
@@ -311,18 +311,16 @@ public abstract class Funcionalidade {
         }
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz.length; j++) {
-                if (matriz[i][j] != 0)
+                if (matriz[i][j] != -1)
                     arestas[numArestas++] = new Aresta(j, i, matriz[i][j]);
             }
         }
         Util.bubbleSort(arestas, numArestas);
-
-        for (int i = 0; i < numArestas; i++)
+        for (int i = 0; i < numArestas; i++){
             if (verificaArvore(floresta, arestas[i].getChave(), arestas[i].getChave2()))
                 sol.add(arestas[i]);
-
+        }
         System.out.println("A arvore geradora minima e composta pelas arestas : ");
-
         for (int i = 0; i < sol.size(); i++) {
             System.out.println(sol.get(i).getChave2() + " -> " + sol.get(i).getChave());
         }
@@ -344,7 +342,6 @@ public abstract class Funcionalidade {
             Q.get(i).setPredecessor(-1);
         }
         Q.get(ini).setChave(0);
-
         while (!Q.isEmpty()) {
             u = Util.removeMinimo(Q);
             if (u.getChave() == ini) {
@@ -352,7 +349,7 @@ public abstract class Funcionalidade {
                 sol.add(aux);
             }
             for (int i = 0; i < Interface.grafos.length; i++) {
-                if (matriz[u.getChave()][i] != 0 && matriz[u.getChave()][i] < Interface.grafos[i].getChave()
+                if (matriz[u.getChave()][i] != -1 && matriz[u.getChave()][i] < Interface.grafos[i].getChave()
                         && Interface.grafos[i].pertence(Q)) {
                     Interface.grafos[i].setChave(matriz[u.getChave()][i]);
                     Interface.grafos[i].setPredecessor(u.getChave());
@@ -373,7 +370,6 @@ public abstract class Funcionalidade {
             Q.get(i).setPredecessor(-1);
         }
         Q.get(ini).setChave(0);
-
         while (!Q.isEmpty()) {
             u = Util.removeMinimo(Q);
             if (u.getChave() == ini) {
@@ -390,7 +386,61 @@ public abstract class Funcionalidade {
         }
         return sol;
     }
-
+    
+    /* Metodo utilizado no algoritmo de Dijkstra */
+    public static void verifCaminhoDijkstraL(int u, int v) {
+        Grafo grafos[];
+        grafos = dijkstraL(u);
+        int atual = v;
+        int caminho[];
+        caminho = new int[grafos.length];
+        int i;
+        for (i = 0; i < grafos.length; i++)
+            caminho[i] = -1;
+        for (i = 0; atual != u; i++) {
+            caminho[i] = atual;
+            if (grafos[atual].getPredecessor() != -1)
+                atual = grafos[atual].getPredecessor();
+            else
+                break;
+        }
+        caminho[i] = atual;
+        if (caminho[i] != u)
+            System.out.println("Não existe caminho entre " + u + " e " + v);
+        else {
+            for (; i > 0; i--)
+                System.out.printf(caminho[i] + " --> ");
+            System.out.printf(caminho[i] + "");
+        }
+    }
+    
+    /* Metodo usado no algoritmo de Djikstra */
+    public static void verifCaminhoDijkstraM(int u, int v) {
+        Grafo grafos[];
+        grafos = dijkstraM(u);
+        int atual = v;
+        int caminho[];
+        caminho = new int[grafos.length];
+        int i;
+        for (i = 0; i < grafos.length; i++)
+            caminho[i] = -1;
+        for (i = 0; atual != u; i++) {
+            caminho[i] = atual;
+            if (grafos[atual].getPredecessor() != -1)
+                atual = grafos[atual].getPredecessor();
+            else
+                break;
+        }
+        caminho[i] = atual;
+        if (caminho[i] != u)
+            System.out.println("Não existe caminho entre " + u + " e " + v);
+        else {
+            for (; i > 0; i--)
+                System.out.printf(caminho[i] + " --> ");
+            System.out.printf(caminho[i] + "");
+        }
+    }
+    
     /* Algoritmo Dijkstra utilizando matriz de adjacencia */
     public static Grafo[] dijkstraM(int noInicial) { 
         Grafo[] grafos = new Grafo[matriz.length];
@@ -398,12 +448,10 @@ public abstract class Funcionalidade {
         Queue<Grafo> Q = new LinkedList<>();
         Grafo u;
         int cont;
-        
         for(int i = 0; i < grafos.length; i++) {
             grafos[i] = new Grafo(i);
             Q.add(grafos[i]);
         }
-        
         Util.inicializa(grafos, noInicial);
         while(!Q.isEmpty()) {
             cont = -1;
@@ -411,7 +459,7 @@ public abstract class Funcionalidade {
             Q.remove(u);
             S.add(u);
             for(int i = 0; i < matriz[u.getChave()].length; i++) {
-                if (matriz[u.getChave()][i] != 0) {
+                if (matriz[u.getChave()][i] != -1) {
                     cont++;
                     Grafo v = grafos[i];
                     if(v != null) {
@@ -424,18 +472,17 @@ public abstract class Funcionalidade {
         }
         return grafos;
     }
+    
     /* Algoritmo Dijkstra utilizando lista de adjacencia */
     public static Grafo[] dijkstraL(int noInicial) { 
         Grafo[] grafos = new Grafo[lista.length];
         Queue<Grafo> S = new LinkedList<>();
         Queue<Grafo> Q = new LinkedList<>();
         Grafo u;
-        
         for(int i = 0; i < grafos.length; i++) {
             grafos[i] = new Grafo(i);
             Q.add(grafos[i]);
         }
-        
         Util.inicializa(grafos, noInicial);
         while(!Q.isEmpty()) {
             u = Util.extraiMinimo(Q);
@@ -453,132 +500,7 @@ public abstract class Funcionalidade {
         return grafos;
     }
     
-    public static void verifCaminhoDijkstraL(int u, int v) {
-        Grafo grafos[];
-        grafos = dijkstraL(u);
-        int atual = v;
-        int caminho[];
-        caminho = new int[grafos.length];
-        int i;
-
-        for (i = 0; i < grafos.length; i++)
-            caminho[i] = -1;
-        for (i = 0; atual != u; i++) {
-            caminho[i] = atual;
-            if (grafos[atual].getPredecessor() != -1)
-                atual = grafos[atual].getPredecessor();
-            else
-                break;
-        }
-        caminho[i] = atual;
-        if (caminho[i] != u)
-            System.out.println("Não existe caminho entre " + u + " e " + v);
-        else {
-            for (; i > 0; i--)
-                System.out.printf(caminho[i] + " --> ");
-            System.out.printf(caminho[i] + "");
-        }
-        
-    }
-       
-    public static void verifCaminhoDijkstraM(int u, int v) {
-        Grafo grafos[];
-        grafos = dijkstraM(u);
-        int atual = v;
-        int caminho[];
-        caminho = new int[grafos.length];
-        int i;
-
-        for (i = 0; i < grafos.length; i++)
-            caminho[i] = -1;
-        for (i = 0; atual != u; i++) {
-            caminho[i] = atual;
-            if (grafos[atual].getPredecessor() != -1)
-                atual = grafos[atual].getPredecessor();
-            else
-                break;
-        }
-        caminho[i] = atual;
-        if (caminho[i] != u)
-            System.out.println("Não existe caminho entre " + u + " e " + v);
-        else {
-            for (; i > 0; i--)
-                System.out.printf(caminho[i] + " --> ");
-            System.out.printf(caminho[i] + "");
-        }
-
-    }
-        
-
-
-    public static Grafo[] bellmanFordL(int noInicial, boolean cicloNeg) { // Lista de adjacencia
-        Grafo[] grafos = new Grafo[lista.length];
-        for(int i = 0; i < grafos.length; i++) {
-            grafos[i] = new Grafo(i);
-        }
-        
-        Util.inicializa(grafos, noInicial);
-        for(int i = 1; i <= Interface.grafos.length-1; i++) {
-            for(int j = 0; j < lista.length; j++) {        /* para cada aresta */
-                for(int k = 0; k < lista[j].size(); k++) { /*  (u,v) do grafo  */
-                    Util.relaxa(grafos[j], grafos[lista[j].get(k).getChave()], lista[j].get(k).getValor());
-                }
-            }
-        }
-        
-        for(int j = 0; j < lista.length; j++) {            /* para cada aresta */
-            for(int k = 0; k < lista[j].size(); k++) {     /*  (u,v) do grafo  */
-                if(grafos[lista[j].get(k).getChave()].getDistancia() > grafos[j].getDistancia() + lista[j].get(k).getValor()) {
-                    cicloNeg = false;
-                }
-            }
-        }
-        
-        return grafos;
-    }
-    
-    public static Grafo[] bellmanFordM(int noInicial, boolean cicloNeg) { // Matriz de adjacencia
-        Grafo[] grafos = new Grafo[matriz.length];
-        for(int i = 0; i < grafos.length; i++) {
-            grafos[i] = new Grafo(i);
-        }
-        
-        int cont;
-        Util.inicializa(grafos, noInicial);
-        for(int i = 1; i <= Interface.grafos.length-1; i++) {
-            for(int j = 0; j < matriz.length; j++) {        /*  para cada  */
-                cont = -1;                                  /* aresta(u,v) */
-                for(int k = 0; k < matriz[j].length; k++) { /*  do grafo   */
-                    if(matriz[j][k] != 0) {
-                        cont++;
-                        Grafo v = grafos[k];
-                        if(v != null) {
-                            Util.relaxa(grafos[j], v, lista[j].get(cont).getValor());
-                        }
-                    }
-                }
-            }
-        }
-        
-        for(int j = 0; j < matriz.length; j++) {        /*  para cada  */
-            cont = -1;                                  /* aresta(u,v) */
-            for(int k = 0; k < matriz[j].length; k++) { /*  do grafo   */
-                if(matriz[j][k] != 0) {
-                    cont++;
-                    Grafo v = grafos[k];
-                    if(v != null) {
-                        if(v.getDistancia() > grafos[j].getDistancia() + lista[j].get(cont).getValor()) {
-                            cicloNeg = false;
-                        }
-                    }
-                }
-            }
-        }
-        
-        return grafos;
-        
-    }
-    
+    /* Metodo usado no algoritmo de Bellman-Ford */
     public static void verifCaminhoBellmanL(int u, int v) {
         Grafo grafos[];
         boolean cicloNeg = true;
@@ -608,6 +530,7 @@ public abstract class Funcionalidade {
         
     }
     
+    /* Metodo usado no algoritmo de Bellman-Ford */
     public static void verifCaminhoBellmanM(int u, int v) {
         Grafo grafos[];
         boolean cicloNeg = true;
@@ -634,7 +557,68 @@ public abstract class Funcionalidade {
                 System.out.printf(caminho[i] + " --> ");
             System.out.printf(caminho[i] + "");
         }
-        
     }
     
+    /* Algoritmo de Bellman-Ford utilizando matriz de adjacencia */
+    public static Grafo[] bellmanFordM(int noInicial, boolean cicloNeg) {
+        Grafo[] grafos = new Grafo[matriz.length];
+        for(int i = 0; i < grafos.length; i++) {
+            grafos[i] = new Grafo(i);
+        }
+        int cont;
+        Util.inicializa(grafos, noInicial);
+        for(int i = 1; i <= Interface.grafos.length-1; i++) {
+            for(int j = 0; j < matriz.length; j++) {        /*  para cada  */
+                cont = -1;                                  /* aresta(u,v) */
+                for(int k = 0; k < matriz[j].length; k++) { /*  do grafo   */
+                    if(matriz[j][k] != -1) {
+                        cont++;
+                        Grafo v = grafos[k];
+                        if(v != null) {
+                            Util.relaxa(grafos[j], v, lista[j].get(cont).getValor());
+                        }
+                    }
+                }
+            }
+        }
+        for(int j = 0; j < matriz.length; j++) {        /*  para cada  */
+            cont = -1;                                  /* aresta(u,v) */
+            for(int k = 0; k < matriz[j].length; k++) { /*  do grafo   */
+                if(matriz[j][k] != -1) {
+                    cont++;
+                    Grafo v = grafos[k];
+                    if(v != null) {
+                        if(v.getDistancia() > grafos[j].getDistancia() + lista[j].get(cont).getValor()) {
+                            cicloNeg = false;
+                        }
+                    }
+                }
+            }
+        }
+        return grafos;
+    }
+    
+    /* Algoritmo de Bellman-Ford utilizando lista de adjacencia */
+    public static Grafo[] bellmanFordL(int noInicial, boolean cicloNeg) {
+        Grafo[] grafos = new Grafo[lista.length];
+        for(int i = 0; i < grafos.length; i++) {
+            grafos[i] = new Grafo(i);
+        }
+        Util.inicializa(grafos, noInicial);
+        for(int i = 1; i <= Interface.grafos.length-1; i++) {
+            for(int j = 0; j < lista.length; j++) {        /* para cada aresta */
+                for(int k = 0; k < lista[j].size(); k++) { /*  (u,v) do grafo  */
+                    Util.relaxa(grafos[j], grafos[lista[j].get(k).getChave()], lista[j].get(k).getValor());
+                }
+            }
+        }
+        for(int j = 0; j < lista.length; j++) {            /* para cada aresta */
+            for(int k = 0; k < lista[j].size(); k++) {     /*  (u,v) do grafo  */
+                if(grafos[lista[j].get(k).getChave()].getDistancia() > grafos[j].getDistancia() + lista[j].get(k).getValor()) {
+                    cicloNeg = false;
+                }
+            }
+        }
+        return grafos;
+    }
 }

@@ -272,7 +272,6 @@ public class Interface extends javax.swing.JFrame {
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
-        jTextArea1.setText("\t\tFormato do arquivo texto base\n\n<sinalizador>\t\t// 0 - grafo, 1 - dígrafo\n<numero_de_grafos>\n<chave1> <chave2> <valor1>\t// definição das arestas\n<chave3> <chave4> <valor2>\n.\n.\n.\n\n\t\tInformações\n- Para grafos não-ponderados, colocar '0' no valor.\n- Caso um campo preenchivel seja deixado em branco, o problema será abortado.\n- ");
         jScrollPane1.setViewportView(jTextArea1);
 
         javax.swing.GroupLayout jPane2Layout = new javax.swing.GroupLayout(jPane2);
