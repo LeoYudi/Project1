@@ -1,10 +1,11 @@
 package main;
 
 public class Aresta {
-    private int chave;
-    private int valor;
-    private int chave2;
-
+    
+    private int chave;      // Chave do primeiro vertice da aresta
+    private int chave2;     // Chave do segundo vertice da aresta
+    private int valor;      // Valor ponderado da aresta
+    
     public Aresta(int chave, int chave2, int valor) {
         this.chave = chave;
         this.chave = chave2;
@@ -19,14 +20,6 @@ public class Aresta {
         this.chave = chave;
     }
 
-    public int getValor() {
-        return valor;
-    }
-
-    public void setValor(int valor) {
-        this.valor = valor;
-    }
-
     public int getChave2() {
         return chave2;
     }
@@ -35,5 +28,11 @@ public class Aresta {
         this.chave2 = chave2;
     }
     
-    
+    public int getValor() {
+        return valor;
+    }
+
+    public void setValor(int valor) {
+        this.valor = valor;
+    }
 }

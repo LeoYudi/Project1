@@ -1,5 +1,9 @@
 package main;
-
+    /* Desenvolvido por:
+        Leonardo Yudi 
+        Otávio Leite
+        Thales Vinicius
+    */
 public class Main {
 
     public static void main(String[] args){
@@ -8,11 +12,5 @@ public class Main {
         menu.setVisible(true);
         menu.setTitle("Menu");
         menu.toFront();
-     
-        
-        
-	}
-
-	
-
+    }
 }
