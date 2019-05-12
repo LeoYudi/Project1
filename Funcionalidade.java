@@ -322,13 +322,51 @@ public abstract class Funcionalidade {
         }
         System.out.println("A arvore geradora minima e composta pelas arestas : ");
         for (int i = 0; i < sol.size(); i++) {
-            System.out.println(sol.get(i).getChave2() + " -> " + sol.get(i).getChave());
+            System.out.println(sol.get(i).getChave2() + " --- " + sol.get(i).getChave());
         }
     }
     
     /* Algoritmo Kruskal utilizando lista de adjacencia */
     public static void KruskalL() {
-        
+        ArrayList<ArrayList<Integer>> floresta;
+        floresta = new ArrayList<>();
+        Aresta[] arestas;
+        arestas = new Aresta[100];
+        ArrayList<Aresta> sol;
+        sol = new ArrayList<>();
+        int numArestas = 0;
+        boolean aux=true;
+        for (int i = 0; i < lista.length; i++) {
+            floresta.add(new ArrayList<>());
+            floresta.get(i).add(i);
+        }
+        for (int i = 0; i < lista.length; i++) {
+            for (int j = 0; j < lista[i].size(); j++) {
+                if(i==0 && j==0)
+                    arestas[numArestas++] = lista[i].get(j);
+                else{
+                    for(int k=0;k<numArestas;k++){
+                        if(arestas[k].getChave() == lista[i].get(j).getChave2() && arestas[k].getChave2() == lista[i].get(j).getChave()){
+                            aux = false;
+                            break;
+                        }
+                        else
+                          aux = true;
+                    }
+                    if(aux)
+                        arestas[numArestas++] = lista[i].get(j);
+                }
+            }
+        }
+        Util.bubbleSort(arestas, numArestas);
+        for (int i = 0; i < numArestas; i++){
+            if (verificaArvore(floresta, arestas[i].getChave(), arestas[i].getChave2()))
+                sol.add(arestas[i]);
+        }
+        System.out.println("A arvore geradora minima e composta pelas arestas : ");
+        for (int i = 0; i < sol.size(); i++) {
+            System.out.println(sol.get(i).getChave2() + " --- " + sol.get(i).getChave());
+        }
     }
 
     /* Algoritmo Prim utilizando matriz de adjacencia */
