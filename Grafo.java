@@ -69,15 +69,15 @@ public class Grafo {
     }
 	
     /* Metodo pertencente a busca de profundidade com lista de adjacencia */
-    public int visita(Grafo grafos[], int tempo, ArrayList<Aresta> arestas[]){
+    public int visitaL(Grafo grafos[], int tempo){
         this.setMarcador('c');
         this.setTempoChegada(tempo++);
         int prox = -1;
-        for(int i=0;i<arestas[this.getChave()].size();i++){
-            prox = arestas[this.getChave()].get(i).getChave();
+        for(int i=0;i<Funcionalidade.lista[this.getChave()].size();i++){
+            prox = Funcionalidade.lista[this.getChave()].get(i).getChave2();
             if(grafos[prox].getMarcador() == 'b'){
                 grafos[prox].setPredecessor(this.chave);
-                tempo = grafos[prox].visita(grafos, tempo, arestas);
+                tempo = grafos[prox].visitaL(grafos, tempo);
             }
         }
         this.setMarcador('p');
@@ -86,27 +86,19 @@ public class Grafo {
     }
     
     /* Metodo pertencente a busca de profundidade com matriz de adjacencia */
-    public int visita(Grafo grafos[], int tempo, int arestas[][]){
+    public int visitaM(Grafo grafos[], int tempo){
         this.setMarcador('c');
         this.setTempoChegada(tempo++);
-        for(int i=0;i<arestas.length;i++){
-            if(arestas[this.getChave()][i] != 0){
+        for(int i=0;i<Funcionalidade.matriz.length;i++){
+            if(Funcionalidade.matriz[this.getChave()][i] != -1){
                 if(grafos[i].getMarcador() == 'b'){
                     grafos[i].setPredecessor(this.chave);
-                    tempo = grafos[i].visita(grafos, tempo, arestas);
+                    tempo = grafos[i].visitaM(grafos, tempo);
                 }
             }
         }
         this.setMarcador('p');
         this.setTempoFim(tempo++);
         return tempo;
-    }
-
-    /* Metodo pertencente ao algoritmo Prim */
-    public boolean pertence(ArrayList<Grafo> lista){
-        for(int i=0; i<lista.size(); i++)
-            if (lista.get(i).getChave() == this.chave)
-                return true;
-        return false;
     }
 }

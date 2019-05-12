@@ -270,6 +270,7 @@ public class Interface extends javax.swing.JFrame {
 
         jABAS.addTab("Main", jPane1);
 
+        jTextArea1.setEditable(false);
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
         jTextArea1.setText("FORMATO DA BASE QUE DEVE SERGUIR O ARQUIVO TEXTO\n\n<sinalizador>\t\t\t// 0 - grafo, 1 - dígrafo\n<numero_de_grafos>\n<vertice1> <vertice2> <valor1>\t// definição das arestas\n<vertice3> <vertice4> <valor2>\n...\n\n\nINFORMAÇÕES\n\t- Para grafos não-ponderados, colocar '0' no valor.\n\t- Caso um campo preenchivel seja deixado em branco, o problema será abortado.\n\t- O limite para o número de arestas é 100\n\n\nFUNÇÕES\n\t- Gerar grafos: gera os grafos com as arestas definidas no arquivo texto.\n\t- Exibir: exibe o grafo da forma escolhida (matriz ou lista).\n\t- Representações:\n\t\t- Matriz Adj: quando selecionado todas as outras funcionalidades irão utilizar uma matriz de adjacência para solucionar os problemas.\n\t\t- Lista Adj: quando selecionado todas as outras funcionalidades irão utilizar uma lista de adjacência para solucionar os problemas.\n\t- Buscas:\n\t\t- Profundidade: reliza uma busca em profundidade no grafo e irá imprimir o tempo de chegada e de saída de cada vértice.\n\t\t- Largura: realiza uma busca em largura no grafo e irá imprimir a distância de cada vértice da raiz escolhida.\n\t- Verificações:\n\t\t- Caminho: verifica se existe um caminho entre dois vértices escolhidos caso exista.\n\t\t- Conexo: verifica se o grafo é conexo, se não imprimi as subárvores existentes.\n\t- Algoritmos:");
@@ -279,11 +280,15 @@ public class Interface extends javax.swing.JFrame {
         jPane2.setLayout(jPane2Layout);
         jPane2Layout.setHorizontalGroup(
             jPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 675, Short.MAX_VALUE)
+            .addGroup(jPane2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 665, Short.MAX_VALUE))
         );
         jPane2Layout.setVerticalGroup(
             jPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
+            .addGroup(jPane2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 252, Short.MAX_VALUE))
         );
 
         jABAS.addTab("Help", jPane2);
@@ -313,7 +318,7 @@ public class Interface extends javax.swing.JFrame {
         try {
             aux = Funcionalidade.criarGrafos(caminho);
         } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "O caminho para o arquivo texto nao existe!");
+            JOptionPane.showMessageDialog(null, "O caminho para o arquivo texto não existe!");
             return;
         }
         for(int i=0; i<grafos.length; i++)
@@ -355,7 +360,7 @@ public class Interface extends javax.swing.JFrame {
     
     private void jBexibirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBexibirActionPerformed
         /* Imprime os grafos */
-        System.out.println("\n\n\n\n\n");
+        System.out.println("\n\n\n\n\n\n\n\n\n");
         if (jTBmatriz.isSelected())
             Util.imprMatrizAdj(Funcionalidade.matriz);
         else
@@ -364,111 +369,134 @@ public class Interface extends javax.swing.JFrame {
     
     private void jBlargActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBlargActionPerformed
         /* Realiza uma busca em largura */
-        System.out.println("\n\n\n\n\n");
         int ini;
         if((ini = Util.grafoInicial()) == -1)
             return;
-        if (jTBmatriz.isSelected())
+        System.out.println("\n\n\n\n\n\n\n\n\n");
+        if (jTBmatriz.isSelected()){
+            System.out.println("Busca em largura utilizando Matriz de Adjacencia:\n");
             grafos = Funcionalidade.buscaLarguraM(ini);
-        else
+        }
+        else{
+            System.out.println("Busca em largura utilizando Lista de Adjacencia:\n");
             grafos = Funcionalidade.buscaLarguraL(ini);
+        }
         Util.imprLargura(grafos, ini);
     }//GEN-LAST:event_jBlargActionPerformed
     
     private void jBprofActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBprofActionPerformed
         /* Realiza uma busca em profundidade */
-        System.out.println("\n\n\n\n\n");
         int ini;
         if((ini = Util.grafoInicial()) == -1)
             return;
-        if (jTBmatriz.isSelected())
+        System.out.println("\n\n\n\n\n\n\n\n\n");
+        if (jTBmatriz.isSelected()){
+            System.out.println("Busca em profundidade utilizando Matriz de Adjacencia:\n");
             grafos = Funcionalidade.buscaProfundidadeM(ini);
-        else
+        }
+        else{
+            System.out.println("Busca em profundidade utilizando Lista de Adjacencia:\n");
             grafos = Funcionalidade.buscaProfundidadeL(ini);
+        }
         Util.imprProfundidade(grafos, ini);
     }//GEN-LAST:event_jBprofActionPerformed
 
-    private void jBcamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBcamActionPerformed
-        /* Verifica existencia de caminho entre 2 vertices */
-        System.out.println("\n\n\n\n\n");
-        int ini, fim;
-        try {
-            do
-                ini = Integer.valueOf(JOptionPane.showInputDialog("Escolha o grafo inicial entre 0 e " + 
-                    Funcionalidade.matriz.length + ":"));
-            while (!Util.isValid(ini, -1));
-        } catch (NumberFormatException ex) {
-            return;
-        }
-        try {
-            do
-                fim = Integer.valueOf(JOptionPane.showInputDialog("Escolha o grafo final entre 0 e " + Funcionalidade.matriz.length
-                    + ", com excessao do grafo inicial " + ini + ":"));
-            while (!Util.isValid(fim, ini));
-        } catch (NumberFormatException ex) {
-            return;
-        }       
-        String opcoes[] = { "Profundidade", "Largura" };
-        int aux = JOptionPane.showOptionDialog(null, "Deseja procurar o caminho com qual tipo de busca?\n\n",
-            "Tipo de busca", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcoes, null);
-
-        switch (aux) {
-            case 0:
-            if (jTBmatriz.isSelected())
-                Funcionalidade.verifCaminhoProfundidadeM(ini, fim);
-            else
-                Funcionalidade.verifCaminhoProfundidadeL(ini, fim);
-            break;
-
-            case 1:
-            if (jTBmatriz.isSelected())
-                Funcionalidade.verifCaminhoLarguraM(ini, fim);
-            else
-                Funcionalidade.verifCaminhoLarguraL(ini, fim);
-            break;
-        }
-    }//GEN-LAST:event_jBcamActionPerformed
-
-    private void jBconexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBconexActionPerformed
+    private void jBconexActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jBconexActionPerformed
         /* Verifica conexidade de um grafo */
-        System.out.println("\n\n\n\n\n");
-        grafos = Funcionalidade.buscaProfundidadeL(0);
-        int tempo, tempoant=1;
-        ArrayList<Integer> desconexos;
-        if((desconexos = Funcionalidade.verificarConexo()) == null)
-            System.out.println("O grafo eh conexo!\n");
-        else { 
-            System.out.println("O grafo eh desconexo!\n    Existem "+desconexos.size()+" subarvores:\n");
+        System.out.println("\n\n\n\n\n\n\n\n\n");
+        if (jTBmatriz.isSelected()) {
+            System.out.println("Verificar conexidade utilizando Matriz de Adjacencia:\n");
+            grafos = Funcionalidade.buscaProfundidadeM(0);
+        } else {
+            System.out.println("Verificar conexidade utilizando Lista de Adjacencia:\n");
+            grafos = Funcionalidade.buscaProfundidadeL(0);
+        }
+        int tempo, tempoant = 1;
+        ArrayList<Integer> desconexos = null;
+        if ((desconexos = Funcionalidade.verificarConexo()) == null)
+            System.out.println("     O grafo eh conexo!\n");
+        else {
+            System.out.println("     O grafo eh desconexo! Existem " + desconexos.size() + " subarvores:\n");
             // Montando arvores
-            for (int i=0; i<desconexos.size(); i++){
-                tempo = grafos[desconexos.get(i)].getTempoFim();    // Tempo de saida da raiz, para encontrar os componentes da mesma
-                System.out.printf("Subarvore de raiz "+desconexos.get(i)+" : \n"+desconexos.get(i)+"  ");
-                for (int j=0; j<Interface.grafos.length; j++) {
+            for (int i = 0; i < desconexos.size(); i++) {
+                tempo = grafos[desconexos.get(i)].getTempoFim(); // Tempo de saida da raiz, para encontrar os
+                                                                 // componentes da mesma
+                System.out.printf(
+                        "        Subarvore de raiz " + desconexos.get(i) + " : \n        " + desconexos.get(i) + "  ");
+                for (int j = 0; j < Interface.grafos.length; j++) {
                     if ((grafos[j].getTempoFim() < tempo) && (grafos[j].getTempoFim() > tempoant))
-                        System.out.printf(grafos[j].getChave()+"  ");
+                        System.out.printf(grafos[j].getChave() + "  ");
                 }
                 tempoant = tempo;
                 System.out.println("\n");
             }
         }
-    }//GEN-LAST:event_jBconexActionPerformed
-    
+    }// GEN-LAST:event_jBconexActionPerformed
+
+    private void jBcamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBcamActionPerformed
+        /* Verifica existencia de caminho entre 2 vertices */
+        int ini, fim;
+        try {
+            do
+            ini = Integer.valueOf(JOptionPane.showInputDialog("Escolha o grafo inicial entre 0 e " + 
+                    Funcionalidade.matriz.length + ":"));
+                    while (!Util.isValid(ini, -1));
+        } catch (NumberFormatException ex) {
+            return;
+        }
+        try {
+            do
+                fim = Integer.valueOf(JOptionPane.showInputDialog("Escolha o grafo final entre 0 e " + (Funcionalidade.matriz.length-1)
+                    + ", com excessao do grafo inicial " + ini + ":"));
+                    while (!Util.isValid(fim, ini));
+        } catch (NumberFormatException ex) {
+            return;
+        }       
+        String opcoes[] = {"Profundidade", "Largura" };
+        int aux = JOptionPane.showOptionDialog(null, "Deseja procurar o caminho com qual tipo de busca?\n\n",
+        "Tipo de busca", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcoes, null);
+        
+        System.out.println("\n\n\n\n\n\n\n\n\n");
+        switch (aux) {
+            case 0:
+            if (jTBmatriz.isSelected()){
+                System.out.println("Verificar caminho entre "+ini+" e "+fim+" utilizando Busca em Profundidade e Matriz de Adjacencia:\n");
+                Funcionalidade.verifCaminhoProfundidadeM(ini, fim);
+            }
+            else{
+                System.out.println("Verificar caminho entre "+ini+" e "+fim+" utilizando Busca em Profundidade e Lista de Adjacencia:\n");
+                Funcionalidade.verifCaminhoProfundidadeL(ini, fim);
+            }
+            break;
+
+            case 1:
+            if (jTBmatriz.isSelected()){
+                System.out.println("Verificar caminho entre "+ini+" e "+fim+" utilizando Busca em Largura e Matriz de Adjacencia:\n");
+                Funcionalidade.verifCaminhoLarguraM(ini, fim);
+            }
+            else{
+                System.out.println("Verificar caminho entre "+ini+" e "+fim+" utilizando Busca em Largura e Lista de Adjacencia:\n");
+                Funcionalidade.verifCaminhoLarguraL(ini, fim);
+            }
+            break;
+        }
+    }//GEN-LAST:event_jBcamActionPerformed
+
     private void jBprimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBprimActionPerformed
         // PRIM
-        System.out.println("\n\n\n\n\n");
         int ini;
         if((ini = Util.grafoInicial()) == -1)
             return;
+        System.out.println("\n\n\n\n\n\n\n\n\n");
         if (jTBmatriz.isSelected())
-            grafos = Funcionalidade.buscaProfundidadeM(ini);
+            Funcionalidade.PrimM(ini);
         else
-            grafos = Funcionalidade.buscaProfundidadeL(ini);
-        Util.imprProfundidade(grafos, ini);
+            Funcionalidade.PrimL(ini);
     }//GEN-LAST:event_jBprimActionPerformed
 
     private void jBkrusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBkrusActionPerformed
         // KRUSKAL
-        System.out.println("\n\n\n\n\n");
+        System.out.println("\n\n\n\n\n\n\n\n\n");
         if (jTBmatriz.isSelected())
             Funcionalidade.KruskalM();
         else
@@ -477,8 +505,8 @@ public class Interface extends javax.swing.JFrame {
     
     private void jBdijActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBdijActionPerformed
         // DJKISTRA
-        System.out.println("\n\n\n\n\n");        
         int ini = Util.grafoInicial();
+        System.out.println("\n\n\n\n\n\n\n\n\n");
         if(jTBmatriz.isSelected()) {
             grafos = Funcionalidade.dijkstraM(ini);
             Util.imprCaminhoDijkstraM(grafos, ini);
@@ -491,8 +519,8 @@ public class Interface extends javax.swing.JFrame {
 
     private void jBellActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBellActionPerformed
         // BELLMAN
-        System.out.println("\n\n\n\n\n");        
         int ini = Util.grafoInicial();
+        System.out.println("\n\n\n\n\n\n\n\n\n");        
         boolean cicloNeg = true;
         if(jTBmatriz.isSelected()) {
             grafos = Funcionalidade.bellmanFordM(ini, cicloNeg);

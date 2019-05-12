@@ -345,12 +345,18 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jScrollPane1" alignment="0" pref="675" max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jScrollPane1" pref="665" max="32767" attributes="0"/>
+                  </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jScrollPane1" alignment="1" pref="263" max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jScrollPane1" pref="252" max="32767" attributes="0"/>
+                  </Group>
               </Group>
             </DimensionLayout>
           </Layout>
@@ -364,6 +370,7 @@
               <SubComponents>
                 <Component class="javax.swing.JTextArea" name="jTextArea1">
                   <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
                     <Property name="columns" type="int" value="20"/>
                     <Property name="rows" type="int" value="5"/>
                     <Property name="text" type="java.lang.String" value="FORMATO DA BASE QUE DEVE SERGUIR O ARQUIVO TEXTO&#xa;&#xa;&lt;sinalizador&gt;&#x9;&#x9;&#x9;// 0 - grafo, 1 - d&#xed;grafo&#xa;&lt;numero_de_grafos&gt;&#xa;&lt;vertice1&gt; &lt;vertice2&gt; &lt;valor1&gt;&#x9;// defini&#xe7;&#xe3;o das arestas&#xa;&lt;vertice3&gt; &lt;vertice4&gt; &lt;valor2&gt;&#xa;...&#xa;&#xa;&#xa;INFORMA&#xc7;&#xd5;ES&#xa;&#x9;- Para grafos n&#xe3;o-ponderados, colocar &apos;0&apos; no valor.&#xa;&#x9;- Caso um campo preenchivel seja deixado em branco, o problema ser&#xe1; abortado.&#xa;&#x9;- O limite para o n&#xfa;mero de arestas &#xe9; 100&#xa;&#xa;&#xa;FUN&#xc7;&#xd5;ES&#xa;&#x9;- Gerar grafos: gera os grafos com as arestas definidas no arquivo texto.&#xa;&#x9;- Exibir: exibe o grafo da forma escolhida (matriz ou lista).&#xa;&#x9;- Representa&#xe7;&#xf5;es:&#xa;&#x9;&#x9;- Matriz Adj: quando selecionado todas as outras funcionalidades ir&#xe3;o utilizar uma matriz de adjac&#xea;ncia para solucionar os problemas.&#xa;&#x9;&#x9;- Lista Adj: quando selecionado todas as outras funcionalidades ir&#xe3;o utilizar uma lista de adjac&#xea;ncia para solucionar os problemas.&#xa;&#x9;- Buscas:&#xa;&#x9;&#x9;- Profundidade: reliza uma busca em profundidade no grafo e ir&#xe1; imprimir o tempo de chegada e de sa&#xed;da de cada v&#xe9;rtice.&#xa;&#x9;&#x9;- Largura: realiza uma busca em largura no grafo e ir&#xe1; imprimir a dist&#xe2;ncia de cada v&#xe9;rtice da raiz escolhida.&#xa;&#x9;- Verifica&#xe7;&#xf5;es:&#xa;&#x9;&#x9;- Caminho: verifica se existe um caminho entre dois v&#xe9;rtices escolhidos caso exista.&#xa;&#x9;&#x9;- Conexo: verifica se o grafo &#xe9; conexo, se n&#xe3;o imprimi as sub&#xe1;rvores existentes.&#xa;&#x9;- Algoritmos:"/>

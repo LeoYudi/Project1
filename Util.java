@@ -9,13 +9,13 @@ public abstract class Util {
     public static boolean isValid(int grafo, int restricao) {
         if (restricao != -1) {  // O grafo nao pode ter a mesma chave do int "restricao"
             if (grafo < 0 || grafo > Funcionalidade.matriz.length || grafo == restricao) {
-                JOptionPane.showMessageDialog(null, "O grafo inserido nao eh valido!");
+                JOptionPane.showMessageDialog(null, "O grafo inserido nao é valido!");
                 return false;
             } else
                 return true;
         } else {    // Nao ha nenhuma restricao, apenas deve ser valido
             if (grafo < 0 || grafo > Funcionalidade.matriz.length) {
-                JOptionPane.showMessageDialog(null, "O grafo inserido nao eh valido!");
+                JOptionPane.showMessageDialog(null, "O grafo inserido nao é valido!");
                 return false;
             } else
                 return true;
@@ -38,7 +38,7 @@ public abstract class Util {
     /* Metodo usado para exibir uma matriz de adjacencia */
     public static void imprMatrizAdj(int[][] matriz) {
         int dim = matriz.length;
-        System.out.printf("    0 ");
+        System.out.printf("Exibição de Matriz de Adjacencia:\n\n    0 ");
         for (int i=1; i<dim; i++)
             System.out.printf("%2d ", i);
         System.out.println();
@@ -52,28 +52,25 @@ public abstract class Util {
 	
     /* Metodo usado para exibir uma lista de adjacencia */
     public static void imprListaAdj(ArrayList<Aresta>[] lista) {
+        System.out.println("Exibição de Lista de Adjacencia:\n");
         for(int i=0; i<lista.length; i++) {
-            System.out.printf("%d ", i);
-            if(lista[i].isEmpty()) 
-		System.out.println("-> null");
-            else {
-		for(int j=0; j<lista[i].size(); j++) 
-                    System.out.printf("-> %d ",lista[i].get(j).getChave());
-                System.out.println("-> null");
-            }
+            System.out.printf("%d -> ", i);
+            for(int j=0; j<lista[i].size(); j++) 
+                System.out.printf("%d, ",lista[i].get(j).getChave2());
+            System.out.println("null");
 	}
     }    
    
     /* Metodo usado para imprimir o resultado de uma busca em profundidade */
     public static void imprProfundidade(Grafo[] grafos, int noInicial) {
-    	System.out.printf("\n\n\n\nGrafo inicial: %d\nTempo de chegada: %d\nTempo de saida: %d\n\n",
+    	System.out.printf("     Grafo inicial: %d\n     Tempo de chegada: %d\n     Tempo de saida: %d\n\n",
     			noInicial,
     			grafos[noInicial].getTempoChegada(),
     			grafos[noInicial].getTempoFim());
         
         for (int i=0; i<grafos.length; i++) 
             if(grafos[i].getChave() != noInicial) 
-            	System.out.printf("Grafo %d\nTempo de chegada: %d\nTempo de saida: %d\n\n",
+            	System.out.printf("     Grafo %d\n     Tempo de chegada: %d\n     Tempo de saida: %d\n\n",
             			grafos[i].getChave(),
             			grafos[i].getTempoChegada(),
             			grafos[i].getTempoFim());
@@ -81,10 +78,10 @@ public abstract class Util {
     
     /* Metodo usado para imprimir o resultado de uma busca em largura */
     public static void imprLargura(Grafo[] grafos, int noInicial) {	
-        System.out.printf("Grafo raiz: %d\n\n", noInicial);
+        System.out.printf("     Grafo raiz: %d\n\n", noInicial);
         for (int i=0; i<grafos.length; i++) {
             if(grafos[i].getChave() != noInicial) {
-                System.out.printf("Grafo %d\nDistancia: %d\nCaminho: [%d] ", 
+                System.out.printf("     Grafo %d\n     Distância: %d\n     Caminho: [%d] ", 
                         grafos[i].getChave(), 
                         grafos[i].getDistancia(), 
                         grafos[i].getChave());
@@ -103,19 +100,28 @@ public abstract class Util {
     }
     
     /* Metodo usado no algoritmo de Prim */
-    public static Grafo removeMinimo(ArrayList<Grafo> lista) {
-        int min = 30000, imin = -1;
-        for (int i = 0; i < lista.size(); i++) {
-            if (lista.get(i).getChave() < min) {
+    public static Grafo removeMinimo(boolean[] Q) {
+        int min = 30001, imin = -1;
+        for (int i = 0; i < Q.length; i++) {
+            if (Interface.grafos[i].getDistancia() < min && Q[i] == true) {
                 imin = i;
-                min = lista.get(i).getChave();
+                min = Interface.grafos[i].getDistancia();
             }
         }
-        return lista.remove(imin);
+        Q[imin] = false;
+        return Interface.grafos[imin];
+    }
+    
+    /* Metodo usado no algoritmo de Prim */
+    public static boolean vazia (boolean[] Q){
+        for (int i=0; i<Q.length; i++)
+            if (Q[i] == true)
+                return false;
+        return true;
     }
 
     /* Metodo usado no algoritmo de Kruskal */
-    public static void bubbleSort(Aresta arestas[], int numArestas){
+    public static void bubbleSort(Aresta arestas[], int numArestas) {
         boolean troca = true;
         Aresta aux;
         while (troca) {
@@ -187,8 +193,8 @@ public abstract class Util {
     public static void imprCaminhoDijkstraM(Grafo grafos[], int ini) {
         for(int i = 0; i < grafos.length; i++) {
             System.out.println("");
-            Funcionalidade.verifCaminhoDijkstraM(ini, i);
-            System.out.println("\nDistância = " + grafos[i].getDistancia());
+            if(Funcionalidade.verifCaminhoDijkstraM(ini, i))
+                System.out.println("\nDistância = " + grafos[i].getDistancia());
         }
     }
     
@@ -196,8 +202,8 @@ public abstract class Util {
     public static void imprCaminhoDijkstraL(Grafo grafos[], int ini) {
         for(int i = 0; i < grafos.length; i++) {
             System.out.println("");
-            Funcionalidade.verifCaminhoDijkstraL(ini, i);
-            System.out.println("\nDistância = " + grafos[i].getDistancia());
+            if(Funcionalidade.verifCaminhoDijkstraL(ini, i))
+                System.out.println("\nDistância = " + grafos[i].getDistancia());
         }
     }
 
@@ -205,8 +211,8 @@ public abstract class Util {
     public static void imprCaminhoBellmanM(Grafo grafos[], int ini) {
         for (int i = 0; i < grafos.length; i++) {
             System.out.println("");
-            Funcionalidade.verifCaminhoBellmanM(ini, i);
-            System.out.println("\nDistância = " + grafos[i].getDistancia());
+            if(Funcionalidade.verifCaminhoBellmanM(ini, i))
+                System.out.println("\nDistância = " + grafos[i].getDistancia());
         }
     }
     
@@ -214,8 +220,8 @@ public abstract class Util {
     public static void imprCaminhoBellmanL(Grafo grafos[], int ini) {
         for (int i = 0; i < grafos.length; i++) {
             System.out.println("");
-            Funcionalidade.verifCaminhoBellmanL(ini, i);
-            System.out.println("\nDistância = " + grafos[i].getDistancia());
+            if(Funcionalidade.verifCaminhoBellmanL(ini, i))
+                System.out.println("\nDistância = " + grafos[i].getDistancia());
         }
     }
 }
